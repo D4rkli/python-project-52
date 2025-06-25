@@ -1,0 +1,14 @@
+[project]
+name = "hexlet-code"
+version = "0.1.0"
+description = "Task Manager Django App"
+requires-python = ">=3.10"
+dependencies = [
+    "django>=4.2",
+    "gunicorn",
+    "python-dotenv",
+    "dj-database-url"
+]
+
+[tool.uv]
+index-url = "https://pypi.org/simple"
