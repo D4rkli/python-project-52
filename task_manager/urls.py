@@ -1,11 +1,15 @@
 from django.urls import path
-from task_manager.views import HomePageView
+from task_manager.views import UserListView
+from django.views.generic import TemplateView
 from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", UserListView.as_view(), name="home"),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('', include('django.contrib.auth.urls')),
 ]
+
+class HomePageView(TemplateView):
+    template_name = 'index.html'
