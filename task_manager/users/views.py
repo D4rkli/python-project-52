@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import UserForm
+from task_manager.users.forms import UserForm
 
 class UserListView(ListView):
     model = User

@@ -1,5 +1,4 @@
-from django.urls import path
-from task_manager.views import UserListView
+from task_manager.users.views import UserListView
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.urls import path, include
