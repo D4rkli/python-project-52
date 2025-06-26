@@ -6,6 +6,6 @@ uv venv .venv
 source .venv/bin/activate
 
 pip install .
-
+pip install gunicorn
 python manage.py collectstatic --noinput
 python manage.py migrate
