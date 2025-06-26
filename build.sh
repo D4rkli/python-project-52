@@ -5,4 +5,4 @@ source $HOME/.local/bin/env
 
 make install
 make collectstatic
-make migrat
+make migrate
