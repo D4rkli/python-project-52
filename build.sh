@@ -2,7 +2,9 @@
 curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env
 
-uv pip install .
+uv venv .venv
+source .venv/bin/activate
 
+uv pip install .
 python manage.py collectstatic --noinput
 python manage.py migrate
