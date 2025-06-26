@@ -6,7 +6,7 @@ from django.urls import path, include
 urlpatterns = [
     path("", UserListView.as_view(), name="home"),
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
+    path('users/', include('task_manager.users.urls')),
     path('', include('django.contrib.auth.urls')),
 ]
 
