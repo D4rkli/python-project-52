@@ -9,6 +9,8 @@ urlpatterns = [
     path('users/', include('task_manager.users.urls')),
     path('', include('django.contrib.auth.urls')),
     path('statuses/', include('task_manager.statuses.urls')),
+    path('tasks/', include('task_manager.tasks.urls')),
+
 ]
 
 class HomePageView(TemplateView):
