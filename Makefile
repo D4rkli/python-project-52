@@ -1,5 +1,5 @@
 install:
-	uv pip install --system --no-deps .
+	uv pip install .
 
 collectstatic:
 	python manage.py collectstatic --noinput
