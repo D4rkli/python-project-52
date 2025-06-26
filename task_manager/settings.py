@@ -9,6 +9,10 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['webserver']
 
+INSTALLED_APPS = [
+    "django_bootstrap5",
+]
+
 DATABASES = {
     'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
 }

@@ -7,7 +7,8 @@ dependencies = [
     "django>=4.2",
     "gunicorn",
     "python-dotenv",
-    "dj-database-url"
+    "dj-database-url",
+    "django-bootstrap5"
 ]
 
 [tool.uv]
