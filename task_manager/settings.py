@@ -36,3 +36,5 @@ USE_I18N = True
 LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
+
+ROOT_URLCONF = "task_manager.urls"
