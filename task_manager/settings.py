@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "task_manager.users",
+    'task_manager.statuses',
 ]
 
 MIDDLEWARE = [
