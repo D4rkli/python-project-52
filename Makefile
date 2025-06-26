@@ -11,4 +11,4 @@ build:
 	./build.sh
 
 render-start:
-	PATH=$$HOME/.local/bin:$$PATH gunicorn task_manager.wsgi
+	gunicorn task_manager.wsgi

@@ -11,5 +11,8 @@ dependencies = [
     "django-bootstrap5"
 ]
 
+[project.scripts]
+gunicorn = "gunicorn.app.wsgiapp:run"
+
 [tool.uv]
 index-url = "https://pypi.org/simple"
