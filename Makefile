@@ -1,5 +1,5 @@
 install:
-	uv pip install -r pyproject.toml
+	pip install -r requirements.txt
 
 migrate:
 	python manage.py migrate
