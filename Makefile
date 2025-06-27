@@ -1,5 +1,5 @@
 install:
-	uv pip install .
+	uv pip install -r requirements.txt
 
 collectstatic:
 	python manage.py collectstatic --noinput
@@ -12,4 +12,5 @@ build:
 
 render-start:
 	gunicorn task_manager.wsgi
+
 

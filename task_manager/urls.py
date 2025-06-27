@@ -1,17 +1,12 @@
-from task_manager.users.views import UserListView
-from django.views.generic import TemplateView
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("Привет, мир! Ваш Django-проект работает.")
 
 urlpatterns = [
-    path("", UserListView.as_view(), name="home"),
     path('admin/', admin.site.urls),
-    path('users/', include('task_manager.users.urls')),
-    path('', include('django.contrib.auth.urls')),
-    path('statuses/', include('task_manager.statuses.urls')),
-    path('tasks/', include('task_manager.tasks.urls')),
-
+    path('', index, name='index'),
 ]
 
-class HomePageView(TemplateView):
-    template_name = 'index.html'
