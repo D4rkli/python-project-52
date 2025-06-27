@@ -7,6 +7,13 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+ALLOWED_HOSTS = [
+    "webserver",
+    "python-project-52-l36d.onrender.com"
+]
+
 DATABASES = {
     "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
@@ -48,11 +55,6 @@ INSTALLED_APPS = [
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
-
-ALLOWED_HOSTS = [
-    "webserver",
-    "python-project-52-l36d.onrender.com"
-]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
