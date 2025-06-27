@@ -11,5 +11,5 @@ build:
 	./build.sh
 
 render-start:
-	.venv1/bin/gunicorn task_manager.wsgi
+	gunicorn task_manager.wsgi
 
