@@ -22,7 +22,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "task_manager.users",
     'task_manager.statuses',
-    'task_manager.tasks'
+    'task_manager.tasks',
+    'task_manager.labels',
 ]
 
 MIDDLEWARE = [
@@ -36,13 +37,15 @@ MIDDLEWARE = [
 ]
 
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': dj_database_url.parse(
+        'postgres://task_manager_db_cxft_user:0xeTRt6ccCjTmmYcfiIW3LvfBJ3r6whuQ@dpg-d1e09oumcj7s73bj5mcg-a/task_manager_db_cxft'
+    )
 }
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # если будешь использовать папку templates/
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
