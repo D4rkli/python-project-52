@@ -48,7 +48,7 @@ ROOT_URLCONF = 'task_manager.urls'
 
 ALLOWED_HOSTS = [
     "webserver",
-    "https://python-project-52-l36d.onrender.com"
+    "python-project-52-l36d.onrender.com"
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
