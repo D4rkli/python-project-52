@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'task_manager',
 ]
 
+ROOT_URLCONF = 'task_manager.urls'
+
 ALLOWED_HOSTS = ["webserver"]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
