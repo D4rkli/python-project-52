@@ -72,6 +72,8 @@ LOCALE_PATHS = [
     BASE_DIR / "locale",
 ]
 
+DEBUG = os.getenv("DEBUG", "True") == "True"
+
 ROOT_URLCONF = "task_manager.urls"
 
 WSGI_APPLICATION = "task_manager.wsgi.application"
