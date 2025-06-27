@@ -1,20 +1,13 @@
 [project]
 name = "hexlet-code"
 version = "0.1.0"
-description = "Task Manager Django App"
-requires-python = ">=3.10"
 dependencies = [
-    "django>=4.2",
+    "Django>=4.2",
     "gunicorn",
+    "psycopg2-binary",
     "python-dotenv",
-    "dj-database-url",
-    "django-bootstrap5",
-    "whitenoise",
-    "psycopg2-binary"
+    "dj-database-url"
 ]
 
-[project.scripts]
-gunicorn = "gunicorn.app.wsgiapp:run"
-
 [tool.uv]
-index-url = "https://pypi.org/simple"
+
