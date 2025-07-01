@@ -6,7 +6,8 @@ dependencies = [
     "gunicorn",
     "psycopg2-binary",
     "python-dotenv",
-    "dj-database-url"
+    "dj-database-url",
+    "django-bootstrap5",
 ]
 
 [tool.uv]
