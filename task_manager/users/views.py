@@ -3,7 +3,13 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic import ListView
 from django.contrib.auth.models import User
+
+class UserListView(ListView):
+    model = User
+    template_name = 'users/user_list.html'
+    context_object_name = 'users'
 
 class UserCreateView(CreateView):
     form_class = UserCreationForm
