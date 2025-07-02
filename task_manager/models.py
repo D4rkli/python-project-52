@@ -16,13 +16,5 @@ class User(AbstractUser):
     )
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='regular')
 
-class Task(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    status = models.ForeignKey(Status, on_delete=models.PROTECT, related_name='tasks')
-    author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='authored_tasks')
-    executor = models.ForeignKey(User, on_delete=models.PROTECT, related_name='executed_tasks', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
     def __str__(self):
         return self.name
