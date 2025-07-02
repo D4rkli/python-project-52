@@ -1,5 +1,7 @@
 import dj_database_url
 from pathlib import Path
+
+import rollbar
 from dotenv import load_dotenv
 import os
 
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -78,3 +81,17 @@ STATIC_URL = "/static/"
 LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = 'task_manager.User'
+
+
+ROLLBAR = {
+    'access_token': os.getenv('ROLLBAR_TOKEN'),
+    'environment': 'production' if not DEBUG else 'development',
+    'root': BASE_DIR,
+}
+
+if not DEBUG:
+    rollbar.init(
+        ROLLBAR['access_token'],
+        ROLLBAR['environment'],
+        root=ROLLBAR['root'],
+    )
