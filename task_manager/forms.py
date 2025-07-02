@@ -8,9 +8,14 @@ class CustomUserCreationForm(UserCreationForm):
         ('user', 'Обычный пользователь'),
         ('admin', 'Администратор'),
     ]
-    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, label="Тип пользователя")
+    user_type = forms.ChoiceField(
+        choices=USER_TYPE_CHOICES,
+        label="Тип пользователя",
+        required=False
+    )
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'user_type', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+
 
