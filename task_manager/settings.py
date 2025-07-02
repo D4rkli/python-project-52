@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'task_manager',
     'django_bootstrap5',
+    'django_filters',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
