@@ -33,3 +33,9 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user.pk == self.get_object().pk
+
+class UserRegisterView(CreateView):
+    model = User
+    form_class = CustomUserCreationForm
+    template_name = 'users/user_form.html'
+    success_url = reverse_lazy('login')
