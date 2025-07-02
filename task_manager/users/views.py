@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import UpdateView, DeleteView
 from django.views.generic import ListView
 from django.contrib.auth.models import User
+from .forms import CustomUserCreationForm
 
 class UserListView(ListView):
     model = User
@@ -12,7 +13,7 @@ class UserListView(ListView):
     context_object_name = 'users'
 
 class UserCreateView(CreateView):
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     template_name = 'users/user_form.html'
     success_url = reverse_lazy('login')
 

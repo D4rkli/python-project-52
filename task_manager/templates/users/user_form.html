@@ -1,0 +1,22 @@
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="id_first_name">Имя</label>
+    {{ form.first_name }}
+  </div>
+  <div class="mb-3">
+    <label for="id_last_name">Фамилия</label>
+    {{ form.last_name }}
+  </div>
+  <div class="mb-3">
+    <label for="id_username">Имя пользователя</label>
+    {{ form.username }}
+  </div>
+  <div class="mb-3">
+    <label for="id_user_type">Тип пользователя</label>
+    {{ form.user_type }}
+  </div>
+  {{ form.password1 }}
+  {{ form.password2 }}
+  <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+</form>
