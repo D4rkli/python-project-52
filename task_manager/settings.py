@@ -80,8 +80,6 @@ STATIC_URL = "/static/"
 
 LOGIN_URL = '/login/'
 
-AUTH_USER_MODEL = 'task_manager.User'
-
 
 ROLLBAR = {
     'access_token': os.getenv('ROLLBAR_TOKEN'),
