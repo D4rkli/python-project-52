@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Метки</h1>
+<ul>
+    {% for label in labels %}
+        <li>{{ label.name }}</li>
+    {% empty %}
+        <li>Метки не найдены.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
