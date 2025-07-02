@@ -8,13 +8,3 @@ class Status(models.Model):
     def __str__(self):
         return self.name
 
-class User(AbstractUser):
-    USER_TYPE_CHOICES = (
-        ('regular', 'Обычный пользователь'),
-        ('manager', 'Менеджер'),
-        ('admin', 'Админ'),
-    )
-    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='regular')
-
-    def __str__(self):
-        return self.name
