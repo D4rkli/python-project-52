@@ -4,6 +4,23 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv/bin/python " />
       <excludeFolder url="file://$MODULE_DIR$/.venv1" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv/include" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/.venvScriptsactivate/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/.venvScriptsactivate/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/task_manager/tasks/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/conf/app_template/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/admin/static" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/auth/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/contenttypes/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/flatpages/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/gis/static" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/redirects/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/sessions/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/sites/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/db/migrations" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.12 virtualenv at ~/python-project-52/.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
