@@ -1,4 +1,4 @@
-#!/home/darkli/python-project-52/venv/bin/python3.12
+#!/home/darkli/python-project-52/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
