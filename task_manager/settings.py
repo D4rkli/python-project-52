@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'task_manager',
     'task_manager.tasks',
     'django_bootstrap5',
-    'django_filters',
+    'django_filter',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
