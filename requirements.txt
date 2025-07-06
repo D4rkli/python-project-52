@@ -23,5 +23,5 @@ sqlparse==0.5.3
     # via django
 typing-extensions==4.14.0
     # via dj-database-url
-django-filter==24.2
+django-filters==24.2
 rollbar==0.16.3
