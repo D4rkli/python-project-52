@@ -7,7 +7,7 @@ dependencies = [
     "psycopg2-binary",
     "python-dotenv",
     "dj-database-url",
-    "django-filter"
+    "django-filter",
     "django-bootstrap5",
     "rollbar>=0.16.3",
 ]
