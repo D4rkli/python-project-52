@@ -1,10 +1,14 @@
 from django.urls import path
-from .views import UserCreateView
+from django.http import HttpResponse
 from .views import UserUpdateView, UserDeleteView, UserCreateView
+
+def profile_view(request):
+    return HttpResponse("Это профиль пользователя!")
 
 urlpatterns = [
     path('create/', UserCreateView.as_view(), name='user_create'),
     path('create/', UserCreateView.as_view(), name='user_create'),
+    path('accounts/profile/', profile_view, name='profile'),
 ]
 
 urlpatterns += [

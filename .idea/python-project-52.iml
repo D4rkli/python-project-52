@@ -22,7 +22,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/sites/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/db/migrations" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.12 virtualenv at ~/python-project-52/.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.12 virtualenv at ~/python-project-83/.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
