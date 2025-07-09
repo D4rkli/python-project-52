@@ -13,4 +13,5 @@ build:
 render-start:
 	gunicorn task_manager.wsgi --bind 0.0.0.0:$(PORT)
 
-
+test:
+	export PYTHONPATH=$(pwd) && pytest
