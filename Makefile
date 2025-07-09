@@ -16,6 +16,4 @@ render-start:
 test:
 	echo "PWD: $(pwd)"
 	ls -la
-	PYTHONPATH=$(pwd) pytest
-
-
+	cd code && pytest
