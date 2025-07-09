@@ -16,4 +16,4 @@ render-start:
 test:
 	echo "PWD: $(pwd)"
 	ls -la
-	cd code && pytest
+	pytest
