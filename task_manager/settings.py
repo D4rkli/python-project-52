@@ -94,3 +94,5 @@ if not DEBUG:
         ROLLBAR['environment'],
         root=ROLLBAR['root'],
     )
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
