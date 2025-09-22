@@ -7,14 +7,15 @@ name = "hexlet-code"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
-    "Django>=4.2",
+    "Django>=5.0",
     "gunicorn",
-    "psycopg2-binary",
     "python-dotenv",
     "dj-database-url",
-    "django-filter",
+    "whitenoise",
+    "psycopg2-binary",
     "django-bootstrap5",
-    "rollbar>=0.16.3",
+    "django-filter",
+    "rollbar",
 ]
 
 [tool.setuptools]
