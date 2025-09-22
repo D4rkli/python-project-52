@@ -2,9 +2,26 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models.deletion import ProtectedError
 from django.contrib.auth.models import User
+from .forms import LoginForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+class AuthLoginView(LoginView):
+    template_name = "users/login.html"
+    authentication_form = LoginForm
+    def form_valid(self, form):
+        messages.success(self.request, "Вы успешно вошли")
+        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse_lazy("home")
+
+class AuthLogoutView(LogoutView):
+    next_page = reverse_lazy("home")
+    def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "Вы вышли из системы")
+        return super().dispatch(request, *args, **kwargs)
 
 class UserListView(ListView):
     model = User
