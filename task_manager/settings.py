@@ -13,7 +13,7 @@ load_dotenv(BASE_DIR / ".env", override=False)
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-please-change")
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1","true","yes"}
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "webserver,localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
 
 #LOGGING = {
 #    'version': 1,
@@ -114,3 +114,17 @@ ROLLBAR = {
     "code_version": os.getenv("RENDER_GIT_COMMIT", ""),
     "root": str(BASE_DIR),
 }
+
+render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
+
+extra = os.getenv("DJANGO_ALLOWED_HOSTS", "")
+ALLOWED_HOSTS += [h.strip() for h in extra.split(",") if h.strip()]
+
+CSRF_TRUSTED_ORIGINS = []
+if render_host:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{render_host}")
+
+extra_csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
+CSRF_TRUSTED_ORIGINS += [u.strip() for u in extra_csrf.split(",") if u.strip()]
