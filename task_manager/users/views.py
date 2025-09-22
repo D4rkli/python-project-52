@@ -8,19 +8,24 @@ from django.contrib.auth.models import User
 from .forms import LoginForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
+
 class AuthLoginView(LoginView):
     template_name = "users/login.html"
     authentication_form = LoginForm
+
     def form_valid(self, form):
-        messages.success(self.request, "Вы успешно вошли")
+        messages.success(self.request, "Вы залогинены")
         return super().form_valid(form)
+
     def get_success_url(self):
-        return reverse_lazy("home")
+        return reverse_lazy("home")  # редирект на /
+
 
 class AuthLogoutView(LogoutView):
     next_page = reverse_lazy("home")
+
     def dispatch(self, request, *args, **kwargs):
-        messages.success(request, "Вы вышли из системы")
+        messages.success(request, "Вы разлогинены")
         return super().dispatch(request, *args, **kwargs)
 
 class UserListView(ListView):
