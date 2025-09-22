@@ -22,6 +22,10 @@
       <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/contrib/sites/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.12/site-packages/django/db/migrations" />
       <excludeFolder url="file://$MODULE_DIR$/hexlet-code/task_manager/tasks/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/hexlet-code/staticfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/staticfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/include" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.12 virtualenv at ~/python-project-52/.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

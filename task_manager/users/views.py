@@ -1,21 +1,18 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.db.models.deletion import ProtectedError
+from django.contrib.auth.models import User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
-User = get_user_model()
 
 class UserListView(ListView):
     model = User
     template_name = "users/index.html"
     context_object_name = "users"
-    ordering = ["id"]  # чтобы стабильно
 
 class UserCreateView(CreateView):
-    form_class = UserCreationForm  # стандартная форма => name="username", id="id_username"
+    form_class = UserCreationForm
     template_name = "users/create.html"
     success_url = reverse_lazy("login")
 
@@ -31,7 +28,6 @@ class SelfOnlyMixin(UserPassesTestMixin):
 
     def handle_no_permission(self):
         messages.error(self.request, "You have no rights to modify another user")
-        # редиректим на список пользователей
         from django.shortcuts import redirect
         return redirect("users_index")
 

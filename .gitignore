@@ -1,5 +1,8 @@
-hexlet-code/.env
+.env
+.venv/
+venv/
 __pycache__/
 *.pyc
-static/
-/staticfiles/
+db.sqlite3
+staticfiles/
+.DS_Store

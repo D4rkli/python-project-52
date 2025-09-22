@@ -4,18 +4,35 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
 from .filters import TaskFilter
+from django.db.models import Prefetch
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from .models import Task
 from .forms import TaskForm
 
-class TaskListView(LoginRequiredMixin, ListView):
+class TaskListView(LoginRequiredMixin, FilterView):
     model = Task
     filterset_class = TaskFilter
     template_name = "tasks/index.html"
     context_object_name = "tasks"
     ordering = ["id"]
     paginate_by = 20
+
+    def get_queryset(self):
+        qs = super().get_queryset().select_related(
+            "status", "author", "executor"
+        ).prefetch_related("labels")
+        v = self.request.GET.get("self_tasks")
+        if v in {"1", "true", "True", "on", "yes", "y"}:
+            qs = qs.filter(author=self.request.user)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        flt = ctx.get("filter")
+        if flt is not None:
+            ctx["form"] = flt.form
+        return ctx
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task

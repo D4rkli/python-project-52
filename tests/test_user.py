@@ -41,6 +41,6 @@ def test_user_cannot_update_others(client, django_user_model):
     u2 = django_user_model.objects.create_user(username="u2", password="Pwd1234567A")
     client.login(username="u1", password="Pwd1234567A")
     resp = client.post(reverse("users_update", args=[u2.pk]), {"username": "hacker"})
-    assert resp.status_code == 302  # редиректим на список в handle_no_permission
+    assert resp.status_code == 302
     u2.refresh_from_db()
     assert u2.username == "u2"
