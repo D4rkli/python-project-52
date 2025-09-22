@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
+from task_manager.users.forms import UserLoginForm
 from .views import HomeView, rollbar_test_view
 from .users import views as uviews
 from .statuses import views as sviews
@@ -14,7 +15,14 @@ urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("rollbar/test/", rollbar_test_view, name="rollbar_test"),
 
-    path("login/",  auth_views.LoginView.as_view(template_name="users/login.html"), name="login"),
+    path(
+        'login/',
+        auth_views.LoginView.as_view(
+            template_name='users/login.html',
+            authentication_form=UserLoginForm
+        ),
+        name='login'
+    ),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
     path("users/", uviews.UserListView.as_view(), name="users_index"),
@@ -37,4 +45,5 @@ urlpatterns = [
     path("labels/create/", lviews.LabelCreateView.as_view(), name="labels_create"),
     path("labels/<int:pk>/update/", lviews.LabelUpdateView.as_view(), name="labels_update"),
     path("labels/<int:pk>/delete/", lviews.LabelDeleteView.as_view(), name="labels_delete"),
+
 ]
