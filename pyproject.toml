@@ -14,3 +14,7 @@ dependencies = [
 ]
 
 [tool.uv]
+
+[tool.setuptools.packages.find]
+include = ["task_manager*"]
+exclude = ["tests*", "templates*", "staticfiles*", ".venv*", "venv*"]
