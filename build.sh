@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-curl -LsSf https://astral.sh/uv/install.sh | sh
-source "$HOME/.local/bin/env"
-
-uv pip install --system -r requirements.txt
+python -V
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install -r requirements.txt
 
 python manage.py collectstatic --noinput
 python manage.py migrate --noinput
