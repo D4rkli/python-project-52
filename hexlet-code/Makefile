@@ -1,0 +1,22 @@
+PY=python
+
+install:
+	uv pip install --system -r requirements.txt
+
+migrate:
+	$(PY) manage.py migrate --noinput
+
+collectstatic:
+	$(PY) manage.py collectstatic --noinput
+
+build:
+	./build.sh
+
+render-start:
+	gunicorn task_manager.wsgi
+
+test:
+	pytest
+
+start:
+	$(PY) manage.py runserver 0.0.0.0:8000

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Create task{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Create task</h1>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{% url 'tasks_index' %}">Cancel</a>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </div>
+</form>
+{% endblock %}

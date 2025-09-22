@@ -1,4 +1,4 @@
-.env
+hexlet-code/.env
 __pycache__/
 *.pyc
 static/

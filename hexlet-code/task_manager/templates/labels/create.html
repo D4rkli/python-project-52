@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}Create label{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Create label</h1>
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{% url 'labels_index' %}">Cancel</a>
+    <button class="btn btn-primary" type="submit">Create</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Task Manager{% endblock %}
+{% block content %}
+  <div class="text-center">
+    <h1 class="display-5 fw-bold mb-3">{% trans "Welcome to Task Manager" %}</h1>
+    <p class="lead mb-4">{% trans "Manage users, tasks, and labels with ease." %}</p>
+    <div class="d-flex gap-2 justify-content-center">
+      <a class="btn btn-outline-secondary" href="/login/">{% trans "Sign in" %}</a>
+      <a class="btn btn-primary" href="/users/create/">{% trans "Sign up" %}</a>
+      <a class="btn btn-outline-primary" href="/users/">{% trans "Users" %}</a>
+    </div>
+  </div>
+{% endblock %}
+
