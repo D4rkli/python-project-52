@@ -13,8 +13,8 @@ build:
 	./build.sh
 
 render-start:
-	python manage.py migrate --noinput && gunicorn task_manager.wsgi:application --bind 0.0.0.0:$(PORT)
-
+	.venv/bin/python manage.py migrate --noinput && \
+	.venv/bin/gunicorn task_manager.wsgi:application --bind 0.0.0.0:$(PORT)
 test:
 	pytest
 
