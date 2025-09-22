@@ -7,19 +7,25 @@ name = "hexlet-code"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
-    "Django>=5.0",
-    "gunicorn",
-    "python-dotenv",
-    "dj-database-url",
-    "whitenoise",
-    "psycopg2-binary",
-    "django-bootstrap5",
-    "django-filter",
-    "rollbar",
+  "Django>=5.0",
+  "gunicorn",
+  "python-dotenv",
+  "dj-database-url",
+  "whitenoise",
+  "psycopg2-binary",
+  "django-bootstrap5",
+  "django-filter",
+  "rollbar",
 ]
 
 [tool.setuptools]
-packages = ["task_manager"]
+packages = [
+  "task_manager",
+  "task_manager.labels",
+  "task_manager.statuses",
+  "task_manager.tasks",
+  "task_manager.users",
+]
 
 [dependency-groups]
 dev = ["pytest", "pytest-django", "ruff"]
