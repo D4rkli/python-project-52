@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-python -V
-
 python -m venv .venv
-. .venv/bin/activate
+./.venv/bin/python -V
+./.venv/bin/python -m pip install --upgrade pip setuptools wheel
+./.venv/bin/python -m pip install -r requirements.txt
 
-pip install -U pip setuptools wheel
-pip install -r requirements.txt
-
-python manage.py collectstatic --noinput
-
+./.venv/bin/python manage.py collectstatic --noinput
 
