@@ -1,4 +1,5 @@
 PY=python
+.PHONY: build render-start install collectstatic migrate clean
 
 install:
 	uv pip install --system -r requirements.txt
@@ -16,6 +17,9 @@ render-start:
 	./.venv/bin/python -m pip show django || true
 	./.venv/bin/python manage.py migrate --noinput && \
 	./.venv/bin/gunicorn task_manager.wsgi:application --bind 0.0.0.0:$(PORT)
+
+clean:
+	rm -rf .venv
 
 test:
 	pytest
