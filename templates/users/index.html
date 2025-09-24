@@ -1,25 +1,24 @@
-{# templates/users/index.html #}
 {% extends "base.html" %}
 {% block title %}Users{% endblock %}
 
 {% block content %}
-<h1>Пользователи</h1>
+<h1 class="mb-3">Users</h1>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Полное имя</th>
-      <th>Логин</th>
-      <th>E-mail</th>
+      <th>Username</th>
+      <th>Full name</th>
+      <th>Email</th>
     </tr>
   </thead>
   <tbody>
     {% for u in users %}
       <tr>
         <td>{{ u.id }}</td>
-        <td>{{ u.first_name }} {{ u.last_name }}</td>
         <td>{{ u.username }}</td>
+        <td>{{ u.first_name }} {{ u.last_name }}</td>
         <td>{{ u.email }}</td>
       </tr>
     {% endfor %}
