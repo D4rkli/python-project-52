@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField, ValidationError
 from django import forms
 from django.contrib.auth.models import User
 
@@ -23,3 +23,10 @@ class LoginForm(AuthenticationForm):
             "class": "form-control",
         })
     )
+
+class SignUpForm(UserCreationForm):
+    def clean_password1(self):
+        p1 = self.cleaned_data.get('password1') or ''
+        if len(p1) < 8:
+            raise ValidationError('Пароль должен содержать минимум 8 символов.')
+        return p1

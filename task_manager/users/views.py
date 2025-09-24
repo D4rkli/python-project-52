@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
+from django.contrib.auth import login
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -40,11 +41,13 @@ class UserListView(ListView):
 class UserCreateView(CreateView):
     form_class = UserCreationForm
     template_name = "users/create.html"
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("home")
 
     def form_valid(self, form):
+        response = super().form_valid(form)
+        login(self.request, self.object)
         messages.success(self.request, "Пользователь успешно зарегистрирован")
-        return super().form_valid(form)
+        return response
 
 
 class SelfOnlyMixin(UserPassesTestMixin):
