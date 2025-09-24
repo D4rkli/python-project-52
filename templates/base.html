@@ -23,7 +23,6 @@
         {% endif %}
       </ul>
 
-      <!-- ВАЖНО: никаких одиночных <a href="...">Вход/Регистрация/Выход</a> вне этого списка -->
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
           <li class="nav-item"><span class="navbar-text me-2">{{ user.username }}</span></li>

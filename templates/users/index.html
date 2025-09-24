@@ -15,7 +15,6 @@
     </tr>
   </thead>
   <tbody>
-    {# поддерживаем оба варианта: users или object_list #}
     {% for u in users|default:object_list %}
       <tr>
         <td>{{ u.id }}</td>
