@@ -15,11 +15,11 @@
     </tr>
   </thead>
   <tbody>
-    {% for u in users %}
+    {# поддерживаем оба варианта: users или object_list #}
+    {% for u in users|default:object_list %}
       <tr>
         <td>{{ u.id }}</td>
         <td>{{ u.username }}</td>
-        <!-- ВАЖНО: именно first_name + пробел + last_name, чтобы совпало с тестом “Elbert Abshire” -->
         <td>{{ u.first_name }} {{ u.last_name }}</td>
         <td>{{ u.email }}</td>
         <td>
@@ -35,3 +35,4 @@
   </tbody>
 </table>
 {% endblock %}
+

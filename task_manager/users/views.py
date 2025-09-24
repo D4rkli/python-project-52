@@ -5,9 +5,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models.deletion import ProtectedError
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .forms import LoginForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
+
+User = get_user_model()
 
 class AuthLoginView(LoginView):
     template_name = "users/login.html"
@@ -27,6 +30,7 @@ class UserListView(ListView):
     model = User
     template_name = "users/index.html"
     context_object_name = "users"
+    ordering = ["id"]
 
 class UserCreateView(CreateView):
     form_class = UserCreationForm
