@@ -1,12 +1,10 @@
-from django.db.models.deletion import ProtectedError
+from django.contrib.auth import get_user_model
+from django.views.generic import ListView
+User = get_user_model()
 
-class UserDeleteView(LoginRequiredMixin, SelfOnlyMixin, DeleteView):
-    # ...
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        try:
-            messages.success(self.request, "User was deleted successfully")
-            return super().post(request, *args, **kwargs)
-        except ProtectedError:
-            messages.error(self.request, "Cannot delete user because it is in use")
-            return redirect("users_index")
+class UserListView(ListView):
+    model = User
+    template_name = "users/index.html"
+    context_object_name = "users"
+    ordering = ["id"]
+
