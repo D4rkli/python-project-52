@@ -1,37 +1,29 @@
+{# templates/users/index.html #}
 {% extends "base.html" %}
+
 {% block title %}Users{% endblock %}
 
 {% block content %}
-<h1 class="mb-3">Users</h1>
+  <h1 class="mb-3">Пользователи</h1>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Имя пользователя</th>
-      <th>Полное имя</th>
-      <th>Email</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for u in users|default:object_list %}
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td>{{ u.id }}</td>
-        <td>{{ u.username }}</td>
-        <td>{{ u.first_name }} {{ u.last_name }}</td>
-        <td>{{ u.email }}</td>
-        <td>
-          {% if user.is_authenticated and user.pk == u.pk %}
-            <a href="{% url 'users_update' u.pk %}">Изменить</a>
-            <a href="{% url 'users_delete' u.pk %}">Удалить</a>
-          {% endif %}
-        </td>
+        <th>ID</th>
+        <th>Имя пользователя</th>
+        <th>Полное имя</th>
+        <th>Email</th>
       </tr>
-    {% empty %}
-      <tr><td colspan="5">Пока нет пользователей</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.username }}</td>
+          <td>{{ u.first_name }} {{ u.last_name }}</td>
+          <td>{{ u.email }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
-
