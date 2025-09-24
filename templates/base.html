@@ -20,9 +20,6 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'tasks_index' %}">Задачи</a></li>
         {% endif %}
       </ul>
-      <a href="{% url 'login' %}">Вход</a>
-      <a href="{% url 'users_create' %}">Регистрация</a>
-      <a href="{% url 'logout' %}">Выход</a>
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
           <li class="nav-item"><span class="navbar-text me-2">{{ user.username }}</span></li>
@@ -42,19 +39,16 @@
 </nav>
 
 <div class="container">
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} mb-3">{{ message }}</div>
-  {% endfor %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
   {% block content %}{% endblock %}
 </div>
 </body>
 </html>
-{% if messages %}
-  <div class="container mt-3">
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags|default:"info" }}" role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
   </div>
 {% endif %}

@@ -11,19 +11,14 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 class AuthLoginView(LoginView):
     template_name = "users/login.html"
-    authentication_form = LoginForm
-
     def form_valid(self, form):
         messages.success(self.request, "Вы залогинены")
         return super().form_valid(form)
-
     def get_success_url(self):
-        return reverse_lazy("home")  # редирект на /
-
+        return reverse_lazy("home")
 
 class AuthLogoutView(LogoutView):
     next_page = reverse_lazy("home")
-
     def dispatch(self, request, *args, **kwargs):
         messages.success(request, "Вы разлогинены")
         return super().dispatch(request, *args, **kwargs)

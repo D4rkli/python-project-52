@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
-from task_manager.users.forms import UserLoginForm
+from task_manager.users.views import AuthLoginView, AuthLogoutView
 from .views import HomeView, rollbar_test_view
 from .users import views as uviews
 from .statuses import views as sviews
@@ -15,12 +15,8 @@ urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("rollbar/test/", rollbar_test_view, name="rollbar_test"),
 
-    path(
-        "login/",
-        auth_views.LoginView.as_view(template_name="users/login.html"),
-        name="login",
-    ),
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("login/",  AuthLoginView.as_view(),  name="login"),
+    path("logout/", AuthLogoutView.as_view(), name="logout"),
 
     path("users/", uviews.UserListView.as_view(), name="users_index"),
     path("users/create/", uviews.UserCreateView.as_view(), name="users_create"),
