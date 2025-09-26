@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .forms import RegistrationForm
 
 
 User = get_user_model()

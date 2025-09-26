@@ -56,6 +56,33 @@ class RegistrationForm(UserCreationForm):
         for f in self.fields.values():
             f.widget.attrs.update({'class': 'form-control', 'placeholder': f.label})
 
+class UserCreateForm(UserCreationForm):
+    first_name = forms.CharField(
+        label='Имя',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'})
+    )
+    last_name = forms.CharField(
+        label='Фамилия',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'})
+    )
+    username = forms.CharField(
+        label='Имя пользователя',
+        help_text='Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'})
+    )
+    password1 = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль', 'minlength': 8})
+    )
+    password2 = forms.CharField(
+        label='Подтверждение пароля',
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Подтверждение пароля'})
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
+
 class SignUpForm(UserCreationForm):
     def clean_password1(self):
         p1 = self.cleaned_data.get('password1') or ''
