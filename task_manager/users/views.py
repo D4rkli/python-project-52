@@ -4,10 +4,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .forms import RegistrationForm
 
 User = get_user_model()
 
@@ -45,10 +46,17 @@ class UserCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        login(self.request, self.object)
+
+        user = authenticate(
+            self.request,
+            username=form.cleaned_data["username"],
+            password=form.cleaned_data["password1"],
+        )
+        if user is not None:
+            login(self.request, user)
+
         messages.success(self.request, "Пользователь успешно зарегистрирован")
         return response
-
 
 class SelfOnlyMixin(UserPassesTestMixin):
     """Разрешаем update/delete только самому себе."""
