@@ -56,7 +56,7 @@ class UserListView(ListView):
 class UserCreateView(CreateView):
     form_class = SignUpForm
     template_name = "users/create.html"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("login")
     def form_valid(self, form):
         response = super().form_valid(form)
         from django.contrib.auth import login
