@@ -1,6 +1,6 @@
 from django.urls import path
 from django.http import HttpResponse
-from .views import UserUpdateView, UserDeleteView, UserCreateView
+from .views import UserUpdateView, UserDeleteView, UserCreateView, UserListView
 from task_manager.users.views import AuthLoginView, AuthLogoutView
 
 def profile_view(request):
@@ -8,7 +8,7 @@ def profile_view(request):
 
 urlpatterns = [
     path('create/', UserCreateView.as_view(), name='user_create'),
-    path('create/', UserCreateView.as_view(), name='user_create'),
+    path("", UserListView.as_view(), name="users_index"),
     path('accounts/profile/', profile_view, name='profile'),
 
     path('<int:pk>/update/', UserUpdateView.as_view(), name='user_update'),

@@ -6,5 +6,5 @@ class UserListView(ListView):
     model = User
     template_name = "users/index.html"
     context_object_name = "users"
-    ordering = ["id"]
+    ordering = get_user_model().objects.all().order_by("id")
 
