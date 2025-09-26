@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Пользователи{% endblock %}
+
+{% block title %}Users{% endblock %}
 
 {% block content %}
-<h1 class="mb-3">Пользователи</h1>
+<h1 class="mb-3">Users</h1>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Имя пользователя</th>
-      <th>Полное имя</th>
-      <th>Дата создания</th>
-      <th></th>
+      <th>Username</th>
+      <th>Full name</th>
+      <th>Email</th>
     </tr>
   </thead>
   <tbody>
@@ -19,16 +19,11 @@
       <tr>
         <td>{{ u.id }}</td>
         <td>{{ u.username }}</td>
-        <td>{{ u.get_full_name }}</td>
-        <td>{{ u.date_joined|date:"d.m.Y H:i" }}</td>
-        <td class="text-end">
-          {% if user.is_authenticated and user.pk == u.pk %}
-            <a href="{% url 'users_update' u.pk %}">Изменить</a><br>
-            <a href="{% url 'users_delete' u.pk %}">Удалить</a>
-          {% endif %}
-        </td>
+        <td>{{ u.display_full_name }}</td>
+        <td>{{ u.email }}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
 {% endblock %}
+

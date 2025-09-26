@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .forms import RegistrationForm
 
+
 User = get_user_model()
 
 
@@ -32,11 +33,25 @@ class AuthLogoutView(LogoutView):
         return super().dispatch(request, *args, **kwargs)
 
 
+def username_to_full(username: str) -> str:
+    """elbert-abshire / elbert_abshire -> Elbert Abshire"""
+    if not username:
+        return ""
+    parts = username.replace("-", " ").replace("_", " ").split()
+    return " ".join(p.capitalize() for p in parts)
+
 class UserListView(ListView):
     model = User
     template_name = "users/index.html"
     context_object_name = "users"
     ordering = ["id"]
+
+    def get_queryset(self):
+        qs = super().get_queryset().order_by("id")
+        for u in qs:
+            full = f"{(u.first_name or '').strip()} {(u.last_name or '').strip()}".strip()
+            u.display_full_name = full if full else username_to_full(u.username)
+        return qs
 
 
 class UserCreateView(CreateView):
