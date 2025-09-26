@@ -60,17 +60,11 @@ class UserCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-
-        user = authenticate(
-            self.request,
-            username=form.cleaned_data["username"],
-            password=form.cleaned_data["password1"],
-        )
-        if user is not None:
-            login(self.request, user)
-
+        from django.contrib.auth import login
+        login(self.request, self.object)
         messages.success(self.request, "Пользователь успешно зарегистрирован")
         return response
+
 
 class SelfOnlyMixin(UserPassesTestMixin):
     """Разрешаем update/delete только самому себе."""

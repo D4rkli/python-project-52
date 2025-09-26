@@ -28,7 +28,7 @@ class LoginForm(AuthenticationForm):
         })
     )
 
-class RegistrationForm(UserCreationForm):
+class SignUpForm(UserCreationForm):
     first_name = forms.CharField(label='Имя', required=False)
     last_name = forms.CharField(label='Фамилия', required=False)
 
@@ -82,10 +82,3 @@ class UserCreateForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
-
-class SignUpForm(UserCreationForm):
-    def clean_password1(self):
-        p1 = self.cleaned_data.get('password1') or ''
-        if len(p1) < 8:
-            raise ValidationError('Пароль должен содержать минимум 8 символов.')
-        return p1
