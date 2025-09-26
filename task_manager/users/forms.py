@@ -29,28 +29,25 @@ class LoginForm(AuthenticationForm):
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(
         label='Имя', required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'})
+        widget=forms.TextInput()
     )
     last_name = forms.CharField(
         label='Фамилия', required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'})
+        widget=forms.TextInput()
     )
     username = forms.CharField(
         label='Имя пользователя',
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'})
+        widget=forms.TextInput()
     )
-
     password1 = forms.CharField(
         label='Пароль',
-        validators=[MinLengthValidator(8)],
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'})
+        widget=forms.PasswordInput()
     )
     password2 = forms.CharField(
         label='Подтверждение пароля',
-        validators=[MinLengthValidator(8)],
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Подтверждение пароля'})
+        widget=forms.PasswordInput()
     )
 
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = User
-        fields = ("first_name", "last_name", "username")
+        fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
