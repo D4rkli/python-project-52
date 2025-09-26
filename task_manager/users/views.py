@@ -59,8 +59,7 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy("login")
     def form_valid(self, form):
         response = super().form_valid(form)
-        from django.contrib.auth import login
-        login(self.request, self.object)
+        messages.success(self.request, "Пользователь успешно зарегистрирован")
         return response
 
 
