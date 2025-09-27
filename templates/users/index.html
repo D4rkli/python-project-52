@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-
-{% block title %}Users{% endblock %}
+{% block title %}Пользователи{% endblock %}
 
 {% block content %}
-<h1 class="mb-3">Users</h1>
+<h1 class="mb-3">Пользователи</h1>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
-      <th>Username</th>
-      <th>Full name</th>
-      <th>Email</th>
+      <th>Имя пользователя</th>
+      <th>Полное имя</th>
+      <th>Дата создания</th>
+      {% if user.is_authenticated %}<th class="text-end"></th>{% endif %}
     </tr>
   </thead>
   <tbody>
@@ -19,11 +19,21 @@
       <tr>
         <td>{{ u.id }}</td>
         <td>{{ u.username }}</td>
-        <td>{{ u.display_full_name }}</td>
-        <td>{{ u.email }}</td>
+        <td>{{ u.get_full_name }}</td>
+        <td>{{ u.date_joined|date:"d.m.Y H:i" }}</td>
+
+        {% if user.is_authenticated and user.pk == u.pk %}
+          <td class="text-end">
+            <a href="{% url 'users_update' u.pk %}">Изменить</a><br>
+            <a href="{% url 'users_delete' u.pk %}">Удалить</a>
+          </td>
+        {% elif user.is_authenticated %}
+          <td></td>
+        {% endif %}
       </tr>
+    {% empty %}
+      <tr><td colspan="5">Пользователей пока нет</td></tr>
     {% endfor %}
   </tbody>
 </table>
 {% endblock %}
-
