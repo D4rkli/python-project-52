@@ -6,6 +6,7 @@ from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
 from .forms import SignUpForm
 from django.urls import reverse_lazy
+from .forms import UserUpdateForm
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
@@ -75,11 +76,11 @@ class SelfOnlyMixin(UserPassesTestMixin):
         return redirect("users_index")
 
 
-class UserUpdateView(LoginRequiredMixin, SelfOnlyMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
-    fields = ["first_name", "last_name", "username", "email"]
-    template_name = "users/update.html"
-    success_url = reverse_lazy("users_index")
+    form_class = UserUpdateForm
+    template_name = 'users/update.html'
+    success_url = reverse_lazy('users_index')
 
     def form_valid(self, form):
         messages.success(self.request, "Пользователь успешно изменён")
