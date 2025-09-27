@@ -48,20 +48,25 @@ class SignUpForm(UserCreationForm):
         })
     )
 
-    class UserUpdateForm(forms.ModelForm):
-        first_name = forms.CharField(
-            label='Имя', required=False,
-            widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'})
-        )
-        last_name = forms.CharField(
-            label='Фамилия', required=False,
-            widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'})
-        )
-        username = forms.CharField(
-            label='Имя пользователя',
-            widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'})
-        )
-
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
+
+
+class UserUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label='Имя', required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'})
+    )
+    last_name = forms.CharField(
+        label='Фамилия', required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'})
+    )
+    username = forms.CharField(
+        label='Имя пользователя',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'})
+    )
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username')
