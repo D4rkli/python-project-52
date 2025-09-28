@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
+
 from .models import Task
-from task_manager.labels.models import Label
+from task_manager.labels.models import Label  # ваш Label из приложения task_manager
 
 User = get_user_model()
 
@@ -11,6 +12,7 @@ class TaskForm(forms.ModelForm):
         queryset=User.objects.all().order_by("id"),
         required=False,
         label="Исполнитель",
+        to_field_name="username",
         widget=forms.Select(
             attrs={
                 "class": "form-select",
@@ -24,6 +26,7 @@ class TaskForm(forms.ModelForm):
         queryset=Label.objects.all().order_by("id"),
         required=False,
         label="Метки",
+        to_field_name="name",
         widget=forms.SelectMultiple(
             attrs={"class": "form-select", "aria-label": "Метки"}
         ),
@@ -46,9 +49,6 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
-
-        self.fields["executor"].empty_label = "---------"
-
-        self.fields["executor"].label_from_instance = lambda u: u.username
-
         self.fields["executor"].queryset = User.objects.all().order_by("id")
+        self.fields["executor"].empty_label = "---------"
+        self.fields["executor"].label_from_instance = lambda u: u.username
