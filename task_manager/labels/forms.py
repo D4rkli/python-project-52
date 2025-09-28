@@ -1,7 +1,18 @@
 from django import forms
 from .models import Label
 
+
 class LabelForm(forms.ModelForm):
     class Meta:
         model = Label
-        fields = ["name"]
+        fields = ('name',)
+        labels = {'name': 'Имя'}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ''
+        self.fields['name'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Имя',
+            'aria-label': 'Имя',
+        })
