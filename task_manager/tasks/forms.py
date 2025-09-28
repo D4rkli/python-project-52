@@ -1,4 +1,3 @@
-# tasks/forms.py
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import Task
@@ -11,7 +10,7 @@ class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
         queryset=User.objects.all().order_by("id"),
         required=False,
-        label="",
+        label="Исполнитель",
         widget=forms.Select(
             attrs={
                 "class": "form-select",
@@ -46,7 +45,7 @@ class TaskForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
 
-        self.fields["executor"].empty_label = "Исполнитель"
+        self.fields["executor"].empty_label = "---------"
 
         self.fields["executor"].label_from_instance = lambda u: u.username
 
