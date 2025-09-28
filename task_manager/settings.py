@@ -15,20 +15,6 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1","true","yes"}
 
 ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
 
-#LOGGING = {
-#    'version': 1,
-#    'disable_existing_loggers': False,
-#    'handlers': {
-#        'console': {
-#            'class': 'logging.StreamHandler',
-#        },
-#    },
-#    'root': {
-#        'handlers': ['console'],
-#        'level': 'DEBUG',
-#    },
-#}
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +29,7 @@ INSTALLED_APPS = [
     'task_manager.statuses',
     'django_filters',
     'django_bootstrap5',
+    'labels'
 ]
 
 MIDDLEWARE = [

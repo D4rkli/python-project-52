@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from .models import Task
-from ..models import Label
+from task_manager.models import Label
 
 User = get_user_model()
 
