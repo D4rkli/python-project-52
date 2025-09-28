@@ -1,26 +1,34 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
-{% block title %}Tasks{% endblock %}
+{% block title %}Задачи{% endblock %}
+
 {% block content %}
-<h1 class="h3 mb-4">Tasks</h1>
+<h1 class="mb-3">Задачи</h1>
 
 <form method="get" class="mb-4">
   {% bootstrap_form filter.form %}
   <div class="d-flex gap-2">
-    <button type="submit" class="btn btn-outline-primary">Filter</button>
-    <a class="btn btn-outline-secondary" href="{% url 'tasks_index' %}">Reset</a>
+    <button type="submit" class="btn btn-outline-primary">Показать</button>
+    <a class="btn btn-outline-secondary" href="{% url 'tasks_index' %}">Сбросить</a>
   </div>
 </form>
 
 <div class="d-flex justify-content-end mb-3">
-  <a class="btn btn-primary" href="{% url 'tasks_create' %}">Create task</a>
+  <a class="btn btn-primary" href="{% url 'tasks_create' %}">Создать задачу</a>
 </div>
 
 <div class="table-responsive">
   <table class="table table-striped align-middle">
     <thead>
       <tr>
-        <th>#</th><th>Name</th><th>Status</th><th>Author</th><th>Executor</th><th>Labels</th><th>Created</th><th class="text-end">Actions</th>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Статус</th>
+        <th>Автор</th>
+        <th>Исполнитель</th>
+        <th>Метки</th>
+        <th>Дата создания</th>
+        <th class="text-end">Действия</th>
       </tr>
     </thead>
     <tbody>
@@ -38,12 +46,14 @@
         </td>
         <td>{{ t.created_at|date:"Y-m-d H:i" }}</td>
         <td class="text-end">
-          <a class="btn btn-sm btn-outline-secondary" href="{% url 'tasks_update' t.pk %}">Edit</a>
-          <a class="btn btn-sm btn-outline-danger" href="{% url 'tasks_delete' t.pk %}">Delete</a>
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'tasks_update' t.pk %}">Изменить</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'tasks_delete' t.pk %}">Удалить</a>
         </td>
       </tr>
       {% empty %}
-      <tr><td colspan="8" class="text-center text-muted">No tasks found</td></tr>
+      <tr>
+        <td colspan="8" class="text-center text-muted">Задач не найдено</td>
+      </tr>
       {% endfor %}
     </tbody>
   </table>
