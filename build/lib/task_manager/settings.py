@@ -15,20 +15,6 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1","true","yes"}
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "webserver,localhost,127.0.0.1").split(",")
 
-#LOGGING = {
-#    'version': 1,
-#    'disable_existing_loggers': False,
-#    'handlers': {
-#        'console': {
-#            'class': 'logging.StreamHandler',
-#        },
-#    },
-#    'root': {
-#        'handlers': ['console'],
-#        'level': 'DEBUG',
-#    },
-#}
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
