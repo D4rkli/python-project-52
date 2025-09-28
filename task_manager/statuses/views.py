@@ -1,20 +1,18 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.deletion import ProtectedError
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from .models import Status
 from .forms import StatusForm
 
-class StatusListView(LoginRequiredMixin, ListView):
+class StatusListView(ListView):
     model = Status
     template_name = "statuses/index.html"
     context_object_name = "statuses"
     ordering = ["id"]
 
-class StatusCreateView(LoginRequiredMixin, CreateView):
+class StatusCreateView(CreateView):
     model = Status
     form_class = StatusForm
     template_name = "statuses/create.html"
@@ -24,17 +22,17 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, "Статус успешно создан")
         return super().form_valid(form)
 
-class StatusUpdateView(LoginRequiredMixin, UpdateView):
+class StatusUpdateView(UpdateView):
     model = Status
     form_class = StatusForm
     template_name = "statuses/update.html"
     success_url = reverse_lazy("statuses_index")
 
     def form_valid(self, form):
-        messages.success(self.request, "Статус успешно обновлен")
+        messages.success(self.request, "Статус успешно изменен")
         return super().form_valid(form)
 
-class StatusDeleteView(LoginRequiredMixin, DeleteView):
+class StatusDeleteView(DeleteView):
     model = Status
     template_name = "statuses/delete.html"
     success_url = reverse_lazy("statuses_index")
@@ -42,8 +40,11 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         try:
-            messages.success(self.request, "Статус успешно удален")
+            messages.success(request, "Статус успешно удален")
             return super().post(request, *args, **kwargs)
         except ProtectedError:
-            messages.error(self.request, "Cannot delete status because it is in use")
+            messages.error(
+                request,
+                "Невозможно удалить статус, потому что он используется",
+            )
             return redirect("statuses_index")
