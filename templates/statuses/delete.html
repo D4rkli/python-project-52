@@ -1,13 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Удаление{% endblock %}
+{% block title %}Удаление статуса{% endblock %}
 
 {% block content %}
-  <h1 class="mb-4">Удаление</h1>
-  <p>Вы уверены, что хотите удалить <strong>{{ object }}</strong>?</p>
-
-  <form method="post">
-    {% csrf_token %}
-    <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Отмена</a>
-    <button type="submit" class="btn btn-danger">Да, удалить</button>
-  </form>
+<h1 class="mb-3">Удаление статуса</h1>
+<p>Вы уверены, что хотите удалить статус «{{ object.name }}»?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Да, удалить</button>
+</form>
 {% endblock %}
