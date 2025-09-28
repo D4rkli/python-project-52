@@ -78,8 +78,8 @@ class SelfOnlyMixin(UserPassesTestMixin):
 class UserUpdateView(LoginRequiredMixin, SelfOnlyMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
-    template_name = 'users/update.html'
-    success_url = reverse_lazy('users_index')
+    template_name = "users/update.html"
+    success_url = reverse_lazy("users_index")
 
     def form_valid(self, form):
         messages.success(self.request, "Пользователь успешно изменён")
