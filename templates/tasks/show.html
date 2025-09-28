@@ -1,18 +1,42 @@
 {% extends "base.html" %}
-{% block title %}Task{% endblock %}
+{% block title %}Задача {{ task.id }}{% endblock %}
+
 {% block content %}
-<h1 class="h3 mb-4">{{ task.name }}</h1>
-<ul class="list-unstyled mb-4">
-  <li><strong>Status:</strong> {{ task.status }}</li>
-  <li><strong>Author:</strong> {{ task.author.username }}</li>
-  <li><strong>Executor:</strong> {{ task.executor.username }}</li>
-  <li><strong>Created:</strong> {{ task.created_at|date:"Y-m-d H:i" }}</li>
-  <li><strong>Labels:</strong>
-    {% for lbl in task.labels.all %}
-      <span class="badge text-bg-secondary">{{ lbl.name }}</span>
-    {% empty %} — {% endfor %}
-  </li>
-</ul>
-<p class="mb-5">{{ task.description|linebreaks }}</p>
-<a class="btn btn-outline-secondary" href="{% url 'tasks_index' %}">Назад</a>
+<h1 class="mb-3">{{ task.name }}</h1>
+
+<div class="card mb-3">
+  <div class="card-body">
+    {% if task.description %}
+      <p class="card-text">{{ task.description|linebreaksbr }}</p>
+    {% endif %}
+
+    <ul class="list-unstyled mb-0">
+      <li><strong>Статус:</strong> {{ task.status }}</li>
+      <li>
+        <strong>Автор:</strong>
+        {{ task.author.get_full_name|default:task.author.username }}
+      </li>
+      <li>
+        <strong>Исполнитель:</strong>
+        {% if task.executor %}
+          {{ task.executor.get_full_name|default:task.executor.username }}
+        {% else %}
+          —
+        {% endif %}
+      </li>
+      <li><strong>Создана:</strong> {{ task.created_at|date:"Y-m-d H:i" }}</li>
+      <li>
+        <strong>Метки:</strong>
+        {% for lbl in task.labels.all %}
+          <span class="badge text-bg-secondary">{{ lbl.name }}</span>
+        {% empty %} — {% endfor %}
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="d-flex gap-2">
+  <a class="btn btn-outline-secondary" href="{% url 'tasks_update' task.pk %}">Изменить</a>
+  <a class="btn btn-outline-danger" href="{% url 'tasks_delete' task.pk %}">Удалить</a>
+</div>
 {% endblock %}
