@@ -1,5 +1,3 @@
-# tasks/forms.py
-
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import Task
@@ -12,6 +10,7 @@ class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
         queryset=User.objects.all().order_by("id"),
         required=False,
+        to_field_name="username",
         label="Исполнитель",
         widget=forms.Select(
             attrs={
@@ -26,7 +25,9 @@ class TaskForm(forms.ModelForm):
         queryset=Label.objects.all().order_by("id"),
         required=False,
         label="Метки",
-        widget=forms.SelectMultiple(attrs={"class": "form-select", "aria-label": "Метки"}),
+        widget=forms.SelectMultiple(
+            attrs={"class": "form-select", "aria-label": "Метки"}
+        ),
     )
 
     class Meta:
