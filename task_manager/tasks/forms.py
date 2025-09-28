@@ -10,7 +10,6 @@ class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
         queryset=User.objects.all().order_by("id"),
         required=False,
-        to_field_name="username",
         label="Исполнитель",
         widget=forms.Select(
             attrs={
@@ -50,12 +49,6 @@ class TaskForm(forms.ModelForm):
 
         self.fields["executor"].empty_label = "---------"
 
-        def full_name(u):
-            first = (u.first_name or "").strip()
-            last = (u.last_name or "").strip()
-            name = f"{first} {last}".strip()
-            return name or u.username
-
-        self.fields["executor"].label_from_instance = full_name
+        self.fields["executor"].label_from_instance = lambda u: u.username
 
         self.fields["executor"].queryset = User.objects.all().order_by("id")
