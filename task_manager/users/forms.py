@@ -60,61 +60,51 @@ class SignUpForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
-        label='Имя', required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'})
+        label="Имя",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Имя"})
     )
     last_name = forms.CharField(
-        label='Фамилия', required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'})
+        label="Фамилия",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Фамилия"})
     )
     username = forms.CharField(
-        label='Имя пользователя',
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'})
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Имя пользователя"})
     )
+    # пароли опциональны — меняем только если заполнены
     password1 = forms.CharField(
-        label='Пароль',
+        label="Пароль",
         required=False,
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}),
-        validators=[MinLengthValidator(8)]
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Пароль"})
     )
     password2 = forms.CharField(
-        label='Подтверждение пароля',
+        label="Подтверждение пароля",
         required=False,
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Подтверждение пароля'}),
-        validators=[MinLengthValidator(8)]
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Подтверждение пароля"})
     )
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username')
-        labels = {
-            'first_name': 'Имя',
-            'last_name': 'Фамилия',
-            'username': 'Имя пользователя',
-        }
-        widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Фамилия'}),
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя пользователя'}),
-        }
+        fields = ("first_name", "last_name", "username")
 
-        def clean(self):
-            cleaned = super().clean()
-            p1, p2 = cleaned.get('password1'), cleaned.get('password2')
-            if p1 or p2:
-                if p1 != p2:
-                    raise ValidationError({'password2': 'Введённые пароли не совпадают.'})
-            return cleaned
+    def clean(self):
+        cleaned = super().clean()
+        p1 = cleaned.get("password1") or ""
+        p2 = cleaned.get("password2") or ""
+        if p1 or p2:
+            if len(p1) < 8:
+                self.add_error("password1", "Пароль должен быть не менее 8 символов.")
+            if p1 != p2:
+                self.add_error("password2", "Пароли не совпадают.")
+        return cleaned
 
-        def save(self, commit=True):
-            user = super().save(commit=False)
-            p1 = self.cleaned_data.get('password1')
-            if p1:
-                user.set_password(p1)
-            if commit:
-                user.save()
-            return user
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.label_suffix = ''
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        p1 = self.cleaned_data.get("password1")
+        if p1:
+            user.set_password(p1)
+        if commit:
+            user.save()
+        return user
