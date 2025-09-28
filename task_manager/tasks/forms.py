@@ -1,3 +1,5 @@
+# tasks/forms.py
+
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import Task
@@ -47,6 +49,12 @@ class TaskForm(forms.ModelForm):
 
         self.fields["executor"].empty_label = "---------"
 
-        self.fields["executor"].label_from_instance = lambda u: u.username
+        def full_name(u):
+            first = (u.first_name or "").strip()
+            last = (u.last_name or "").strip()
+            name = f"{first} {last}".strip()
+            return name or u.username
+
+        self.fields["executor"].label_from_instance = full_name
 
         self.fields["executor"].queryset = User.objects.all().order_by("id")
