@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
-from .forms import SignUpForm, UserUpdateForm
+from .forms import SignUpForm, UserUpdateForm, LoginForm
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -15,6 +15,7 @@ User = get_user_model()
 
 class AuthLoginView(LoginView):
     template_name = "users/login.html"
+    authentication_form = LoginForm
 
     def form_valid(self, form):
         messages.success(self.request, "Вы залогинены")

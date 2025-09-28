@@ -1,10 +1,30 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 
 User = get_user_model()
+
+class LoginForm(AuthenticationForm):
+    username = UsernameField(
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "Имя пользователя",
+            "aria-label": "Имя пользователя",
+            "autofocus": True,
+        })
+    )
+    password = forms.CharField(
+        label="Пароль",
+        strip=False,
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "Пароль",
+            "aria-label": "Пароль",
+        })
+    )
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(
@@ -73,7 +93,6 @@ class UserUpdateForm(forms.ModelForm):
         label="Имя пользователя",
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Имя пользователя"})
     )
-    # пароли опциональны — меняем только если заполнены
     password1 = forms.CharField(
         label="Пароль",
         required=False,
