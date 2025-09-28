@@ -75,7 +75,7 @@ class SelfOnlyMixin(UserPassesTestMixin):
         return redirect("users_index")
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, SelfOnlyMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
     template_name = 'users/update.html'
