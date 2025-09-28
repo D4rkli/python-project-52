@@ -47,7 +47,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        messages.success(self.request, "Задача успешно создана")
+        messages.success(self.request, "Task created successfully")
         return super().form_valid(form)
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
@@ -57,7 +57,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("tasks_index")
 
     def form_valid(self, form):
-        messages.success(self.request, "Задача успешно обновлена")
+        messages.success(self.request, "Task updated successfully")
         return super().form_valid(form)
 
 class AuthorOnlyDeleteMixin(UserPassesTestMixin):
@@ -66,7 +66,7 @@ class AuthorOnlyDeleteMixin(UserPassesTestMixin):
         return self.request.user.is_authenticated and obj.author_id == self.request.user.id
 
     def handle_no_permission(self):
-        messages.error(self.request, "У вас нет прав удалить залачу")
+        messages.error(self.request, "You have no rights to delete this task")
         return redirect("tasks_index")
 
 class TaskDeleteView(LoginRequiredMixin, AuthorOnlyDeleteMixin, DeleteView):
@@ -75,6 +75,6 @@ class TaskDeleteView(LoginRequiredMixin, AuthorOnlyDeleteMixin, DeleteView):
     success_url = reverse_lazy("tasks_index")
 
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, "Задача успешно удалена")
+        messages.success(self.request, "Task deleted successfully")
         return super().delete(request, *args, **kwargs)
 
