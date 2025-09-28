@@ -1,14 +1,13 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% block title %}{% trans "Удалить статус" %}{% endblock %}
+{% block title %}Удаление{% endblock %}
+
 {% block content %}
-<h1 class="h3 mb-4">{% trans "Удалить статус" %}</h1>
-<p class="mb-4">{% trans "Вы уверены что хотите удалить этот статус?" %}</p>
-<form method="post">
-  {% csrf_token %}
-  <div class="d-flex gap-2">
-    <a class="btn btn-outline-secondary" href="{% url 'statuses_index' %}">{% trans "Отмена" %}</a>
-    <button type="submit" class="btn btn-danger">{% trans "Удалить" %}</button>
-  </div>
-</form>
+  <h1 class="mb-4">Удаление</h1>
+  <p>Вы уверены, что хотите удалить <strong>{{ object }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Отмена</a>
+    <button type="submit" class="btn btn-danger">Да, удалить</button>
+  </form>
 {% endblock %}

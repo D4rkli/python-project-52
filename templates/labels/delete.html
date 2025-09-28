@@ -1,14 +1,13 @@
 {% extends "base.html" %}
-{% load django_bootstrap5 %}
-{% block title %}Create label{% endblock %}
+{% block title %}Удаление{% endblock %}
+
 {% block content %}
-<h1 class="h3 mb-4">Create label</h1>
-<form method="post" novalidate>
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  <div class="d-flex gap-2">
-    <a class="btn btn-outline-secondary" href="{% url 'labels_index' %}">Cancel</a>
-    <button class="btn btn-primary" type="submit">Create</button>
-  </div>
-</form>
+  <h1 class="mb-4">Удаление</h1>
+  <p>Вы уверены, что хотите удалить <strong>{{ object }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Отмена</a>
+    <button type="submit" class="btn btn-danger">Да, удалить</button>
+  </form>
 {% endblock %}
