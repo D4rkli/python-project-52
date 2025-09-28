@@ -1,14 +1,31 @@
 {% extends "base.html" %}
-{% load django_bootstrap5 %}
-{% block title %}Create task{% endblock %}
+{% block title %}Изменение задачи{% endblock %}
+
 {% block content %}
-<h1 class="h3 mb-4">Create task</h1>
-<form method="post" novalidate>
+<h1 class="mb-3">Изменение задачи</h1>
+
+<form method="post">
   {% csrf_token %}
-  {% bootstrap_form form %}
-  <div class="d-flex gap-2">
-    <a class="btn btn-outline-secondary" href="{% url 'tasks_index' %}">Cancel</a>
-    <button type="submit" class="btn btn-primary">Save</button>
+  <div class="mb-3">
+    {{ form.name.label_tag }}
+    {{ form.name }}
   </div>
+  <div class="mb-3">
+    {{ form.description.label_tag }}
+    {{ form.description }}
+  </div>
+  <div class="mb-3">
+    {{ form.status.label_tag }}
+    {{ form.status }}
+  </div>
+  <div class="mb-3">
+    {{ form.executor.label_tag }}
+    {{ form.executor }}
+  </div>
+  <div class="mb-3">
+    {{ form.labels.label_tag }}
+    {{ form.labels }}
+  </div>
+  <button type="submit" class="btn btn-primary">Изменить</button>
 </form>
 {% endblock %}
