@@ -1,39 +1,19 @@
-{% extends "base.html" %}
-{% block title %}Пользователи{% endblock %}
+<tbody>
+{% for u in users %}
+  <tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.username }}</td>
+    <td>{{ u.get_full_name|default:u.username }}</td>
+    <td class="text-end">
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{% url 'users_update' u.pk %}">Изменить</a>
 
-{% block content %}
-<h1 class="mb-3">Пользователи</h1>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Имя пользователя</th>
-      <th>Полное имя</th>
-      <th>Дата создания</th>
-      {% if user.is_authenticated %}<th class="text-end"></th>{% endif %}
-    </tr>
-  </thead>
-  <tbody>
-    {% for u in users %}
-      <tr>
-        <td>{{ u.id }}</td>
-        <td>{{ u.username }}</td>
-        <td>{{ u.get_full_name }}</td>
-        <td>{{ u.date_joined|date:"d.m.Y H:i" }}</td>
-
-        {% if user.is_authenticated and user.pk == u.pk %}
-          <td class="text-end">
-            <a href="{% url 'users_update' u.pk %}">Изменить</a><br>
-            <a href="{% url 'users_delete' u.pk %}">Удалить</a>
-          </td>
-        {% elif user.is_authenticated %}
-          <td></td>
-        {% endif %}
-      </tr>
-    {% empty %}
-      <tr><td colspan="5">Пользователей пока нет</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% endblock %}
+      {# Обязательно показать "Удалить" для текущего пользователя #}
+      {% if user.is_authenticated and user.pk == u.pk %}
+        <a class="btn btn-sm btn-outline-danger"
+           href="{% url 'users_delete' u.pk %}">Удалить</a>
+      {% endif %}
+    </td>
+  </tr>
+{% endfor %}
+</tbody>

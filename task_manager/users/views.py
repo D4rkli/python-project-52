@@ -34,7 +34,6 @@ class AuthLogoutView(LogoutView):
 
 
 def username_to_full(username: str) -> str:
-    """elbert-abshire / elbert_abshire -> Elbert Abshire"""
     if not username:
         return ""
     parts = username.replace("-", " ").replace("_", " ").split()
