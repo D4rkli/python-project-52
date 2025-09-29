@@ -8,25 +8,24 @@ User = get_user_model()
 
 class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
-        queryset=User.objects.order_by("id"),
-        required=False,
         label="Исполнитель",
-        widget=forms.Select(
-            attrs={
-                "class": "form-select",
-                "id": "id_executor",
-                "aria-label": "Исполнитель",
-            }
-        ),
+        required=False,
+        queryset=User.objects.none(),
+        widget=forms.Select(attrs={
+            "class": "form-select",
+            "id": "id_executor",
+            "aria-label": "Исполнитель",
+        }),
     )
 
     labels = forms.ModelMultipleChoiceField(
-        queryset=Label.objects.order_by("id"),
-        required=False,
         label="Метки",
-        widget=forms.SelectMultiple(
-            attrs={"class": "form-select", "aria-label": "Метки"}
-        ),
+        required=False,
+        queryset=Label.objects.none(),
+        widget=forms.SelectMultiple(attrs={
+            "class": "form-select",
+            "aria-label": "Метки",
+        }),
     )
 
     class Meta:
@@ -38,17 +37,21 @@ class TaskForm(forms.ModelForm):
             "status": "Статус",
         }
         widgets = {
-            "name": forms.TextInput({"class": "form-control", "aria-label": "Имя"}),
-            "description": forms.Textarea({"class": "form-control", "aria-label": "Описание"}),
-            "status": forms.Select({"class": "form-select", "aria-label": "Статус"}),
+            "name": forms.TextInput(attrs={"class": "form-control", "aria-label": "Имя"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "aria-label": "Описание"}),
+            "status": forms.Select(attrs={"class": "form-select", "aria-label": "Статус"}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
 
+        self.fields["executor"].queryset = User.objects.order_by("id")
+        self.fields["labels"].queryset = Label.objects.order_by("id")
+
         def user_label(u: User) -> str:
             full = (u.get_full_name() or "").strip()
-            return full if full else u.username
+            return full or u.username
 
         self.fields["executor"].label_from_instance = user_label
+        self.fields["executor"].empty_label = "---------"
