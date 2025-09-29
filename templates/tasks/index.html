@@ -6,6 +6,8 @@
 {% block content %}
 <h1 class="mb-4">Задачи</h1>
 
+{% bootstrap_messages %}
+
 <form method="get" class="mb-4">
   {% bootstrap_form filter.form %}
   <div class="d-flex gap-2">
