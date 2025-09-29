@@ -1,35 +1,13 @@
-{% extends "base.html" %}
-{% block title %}Пользователи{% endblock %}
-
-{% block content %}
-<h1 class="mb-4">Пользователи</h1>
-
-<table class="table table-striped align-middle">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Имя пользователя</th>
-      <th>Полное имя</th>
-      <th class="text-end">Действия</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for u in users %}
-      <tr>
-        <td>{{ u.id }}</td>
-        <td>{{ u.username }}</td>
-        <td>{{ u.get_full_name|default:u.username }}</td>
-        <td class="text-end">
-          <a class="btn btn-sm btn-outline-secondary"
-             href="{% url 'users_update' u.pk %}">Изменить</a>
-
-          {% if request.user.is_authenticated and request.user.pk == u.pk %}
-            <a class="btn btn-sm btn-outline-danger"
-               href="{% url 'users_delete' u.pk %}">Удалить</a>
-          {% endif %}
-        </td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% endblock %}
+{% for u in users %}
+<tr>
+  <td>{{ u.id }}</td>
+  <td>{{ u.username }}</td>
+  <td>{{ u.get_full_name|default:u.username }}</td>
+  <td class="text-end">
+    <a class="btn btn-sm btn-outline-secondary"
+       href="{% url 'users_update' u.pk %}">Изменить</a>
+    <a class="btn btn-sm btn-outline-danger"
+       href="{% url 'users_delete' u.pk %}">Удалить</a>
+  </td>
+</tr>
+{% endfor %}
