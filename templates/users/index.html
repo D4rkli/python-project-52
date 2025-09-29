@@ -23,7 +23,6 @@
           <a class="btn btn-sm btn-outline-secondary"
              href="{% url 'users_update' u.pk %}">Изменить</a>
 
-          {# ВАЖНО: ссылка «Удалить» внутри этой же <tr> #}
           {% if request.user.is_authenticated and request.user.pk == u.pk %}
             <a class="btn btn-sm btn-outline-danger"
                href="{% url 'users_delete' u.pk %}">Удалить</a>
