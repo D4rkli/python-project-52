@@ -5,6 +5,7 @@ from task_manager.labels.models import Label
 
 User = get_user_model()
 
+
 class TaskForm(forms.ModelForm):
     executor = forms.ModelChoiceField(
         queryset=User.objects.order_by("id"),
@@ -45,4 +46,9 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
-        self.fields["executor"].label_from_instance = lambda u: u.username
+
+        def user_label(u: User) -> str:
+            full = (u.get_full_name() or "").strip()
+            return full if full else u.username
+
+        self.fields["executor"].label_from_instance = user_label
