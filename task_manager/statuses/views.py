@@ -41,11 +41,9 @@ class StatusDeleteView(DeleteView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         try:
+            response = super().post(request, *args, **kwargs)
             messages.success(request, "Статус успешно удален")
-            return super().post(request, *args, **kwargs)
+            return response
         except ProtectedError:
-            messages.error(
-                request,
-                "Невозможно удалить статус, потому что он используется",
-            )
-            return redirect("statuses_index")
+            messages.error(request, "Невозможно удалить статус, потому что он используется")
+            return redirect(self.success_url)
