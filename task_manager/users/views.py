@@ -93,7 +93,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        # запрет удаления чужого пользователя + сообщение
+        # запрет удаления чужого пользователя
         if self.object.pk != request.user.pk:
             messages.error(request, "У вас нет прав для изменения")
             return redirect("users_index")
@@ -101,6 +101,13 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        response = super().delete(request, *args, **kwargs)
-        messages.success(request, "Пользователь успешно удалён")
-        return response
+        try:
+            response = super().delete(request, *args, **kwargs)
+            messages.success(request, "Пользователь успешно удалён")
+            return response
+        except ProtectedError:
+            messages.error(
+                request,
+                "Невозможно удалить пользователя, потому что он используется",
+            )
+            return redirect("users_index")
