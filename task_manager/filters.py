@@ -1,4 +1,3 @@
-# task_manager/filters.py
 import django_filters
 from django import forms
 from django.contrib.auth import get_user_model
@@ -15,24 +14,38 @@ class TaskFilter(django_filters.FilterSet):
         field_name="status",
         queryset=Status.objects.all().order_by("id"),
         label="Статус",
-        widget=forms.Select(attrs={"class": "form-select", "aria-label": "Статус"}),
+        widget=forms.Select
+            (attrs={
+            "class": "form-select",
+            "aria-label": "Статус",
+            },
+        ),
     )
 
     executor = django_filters.ModelChoiceFilter(
         field_name="executor",
         queryset=User.objects.all().order_by("id"),
         label="Исполнитель",
-        widget=forms.Select(attrs={"class": "form-select", "aria-label": "Исполнитель"}),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+                "aria-label": "Исполнитель",
+            },
+        ),
     )
 
     labels = django_filters.ModelChoiceFilter(
         field_name="labels",
         queryset=Label.objects.all().order_by("id"),
         label="Метка",
-        widget=forms.Select(attrs={"class": "form-select", "aria-label": "Метка"}),
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
+                "aria-label": "Метка",
+            },
+        ),
     )
 
-    # Это поле нужно тестам (ищут label с этим текстом)
     self_tasks = django_filters.BooleanFilter(
         method="filter_self",
         label="Только свои задачи",
@@ -47,8 +60,12 @@ class TaskFilter(django_filters.FilterSet):
         fields = ("status", "executor", "labels")
 
     def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
-        super().__init__(data=data, queryset=queryset, request=request, prefix=prefix)
-        # убираем двоеточие после label'ов
+        super().__init__(
+            data=data,
+            queryset=queryset,
+            request=request,
+            prefix=prefix
+        )
         self.form.label_suffix = ""
 
     def filter_self(self, qs, name, value):

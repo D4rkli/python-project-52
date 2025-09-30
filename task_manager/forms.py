@@ -8,15 +8,23 @@ class CustomUserCreationForm(UserCreationForm):
         ('user', 'Обычный пользователь'),
         ('admin', 'Администратор'),
     ]
-    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, label="Тип пользователя")
+    user_type = forms.ChoiceField(
+        choices=USER_TYPE_CHOICES,
+        label="Тип пользователя",
+    )
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'password1',
+            'password2',
+        ]
 
 
 class SignUpForm(UserCreationForm):
-    ...
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         placeholders = {
@@ -27,5 +35,10 @@ class SignUpForm(UserCreationForm):
             "password2": "Подтверждение пароля",
         }
         for name, ph in placeholders.items():
-            self.fields[name].widget.attrs.update({"placeholder": ph, "class": "form-control"})
+            self.fields[name].widget.attrs.update(
+                {
+                    "placeholder": ph,
+                    "class": "form-control",
+                }
+            )
 
