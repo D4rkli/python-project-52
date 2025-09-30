@@ -86,28 +86,15 @@ class UserUpdateView(LoginRequiredMixin, SelfOnlyMixin, UpdateView):
         return response
 
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, SelfOnlyMixin, DeleteView):
     model = User
     template_name = "users/delete.html"
     success_url = reverse_lazy("users_index")
 
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        # запрет удаления чужого пользователя
-        if self.object.pk != request.user.pk:
-            messages.error(request, "У вас нет прав для изменения")
-            return redirect("users_index")
-        return super().dispatch(request, *args, **kwargs)
+    def form_valid(self, form):
+        messages.success(self.request, "Пользователь успешно удален")
+        return super().form_valid(form)
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        try:
-            response = super().delete(request, *args, **kwargs)
-            messages.success(request, "Пользователь успешно удалён")
-            return response
-        except ProtectedError:
-            messages.error(
-                request,
-                "Невозможно удалить пользователя, потому что он используется",
-            )
-            return redirect("users_index")
+    def handle_no_permission(self):
+        messages.error(self.request, "Вы не имеете прав для удаления другого пользователя")
+        return redirect("users_index")
