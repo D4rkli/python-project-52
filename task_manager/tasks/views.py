@@ -82,7 +82,7 @@ class TaskDeleteView(LoginRequiredMixin, AuthorOnlyDeleteMixin, DeleteView):
     template_name = "tasks/delete.html"
     success_url = reverse_lazy("tasks_index")
 
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)
         messages.success(request, "Задача успешно удалена")
-        return super().post(request, *args, **kwargs)
+        return response
