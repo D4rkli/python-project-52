@@ -59,13 +59,13 @@ def test_user_can_update_self(client, django_user_model):
 def test_user_cannot_update_others(client, django_user_model):
     u1 = django_user_model.objects.create_user(
         username="u1",
-        password="Pwd1234567A",
+        password="pwd1234567A",
     )
     u2 = django_user_model.objects.create_user(
         username="u2",
-        password="Pwd1234567A",
+        password="pwd1234567A",
     )
-    client.login(username="u1", password="Pwd1234567A")
+    client.login(username=u1, password="pwd1234567A")
     resp = client.post(
         reverse("users_update", args=[u2.pk]),
         {"username": "hacker"},

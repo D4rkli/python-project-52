@@ -5,6 +5,7 @@ from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
 from task_manager.tasks.models import Task
 
+
 @pytest.fixture
 def user(db):
     return User.objects.create_user(username="alice", password="Pwd1234567A")
