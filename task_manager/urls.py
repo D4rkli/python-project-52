@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path
-from django.contrib.auth import views as auth_views
 
 from task_manager.users.views import AuthLoginView, AuthLogoutView
 from .views import HomeView, rollbar_test_view
@@ -15,7 +14,7 @@ urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("rollbar/test/", rollbar_test_view, name="rollbar_test"),
 
-    path("login/",  AuthLoginView.as_view(),  name="login"),
+    path("login/",  AuthLoginView.as_view(), name="login"),
     path("logout/", AuthLogoutView.as_view(), name="logout"),
 
     path("users/", uviews.UserListView.as_view(), name="users_index"),

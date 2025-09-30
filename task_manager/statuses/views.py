@@ -3,15 +3,16 @@ from django.db.models.deletion import ProtectedError
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
 from .models import Status
 from .forms import StatusForm
+
 
 class StatusListView(ListView):
     model = Status
     template_name = "statuses/index.html"
     context_object_name = "statuses"
     ordering = ["id"]
+
 
 class StatusCreateView(CreateView):
     model = Status
@@ -23,6 +24,7 @@ class StatusCreateView(CreateView):
         messages.success(self.request, "Статус успешно создан")
         return super().form_valid(form)
 
+
 class StatusUpdateView(UpdateView):
     model = Status
     form_class = StatusForm
@@ -32,6 +34,7 @@ class StatusUpdateView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "Статус успешно изменен")
         return super().form_valid(form)
+
 
 class StatusDeleteView(DeleteView):
     model = Status

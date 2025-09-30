@@ -1,6 +1,9 @@
 import rollbar
+import logging
 import os
 from django.conf import settings
+from rollbar.logger import RollbarHandler
+
 
 ROLLBAR = {
     'access_token': os.getenv("ROLLBAR_TOKEN", "ab027f85a51e7eadf2bb36b552d1516"),
@@ -11,7 +14,5 @@ ROLLBAR = {
 rollbar.init(**ROLLBAR)
 
 
-import logging
-from rollbar.logger import RollbarHandler
 logger = logging.getLogger(__name__)
 logger.addHandler(RollbarHandler())
