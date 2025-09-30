@@ -28,7 +28,6 @@ class TaskForm(forms.ModelForm):
         }),
     )
 
-
     class Meta:
         model = Task
         fields = ("name", "description", "status", "executor", "labels")
@@ -38,9 +37,24 @@ class TaskForm(forms.ModelForm):
             "status": "Статус",
         }
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control", "aria-label": "Имя"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "aria-label": "Описание"}),
-            "status": forms.Select(attrs={"class": "form-select", "aria-label": "Статус"}),
+            "name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "aria-label": "Имя",
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "aria-label": "Описание",
+                }
+            ),
+            "status": forms.Select(
+                attrs={
+                    "class": "form-select",
+                    "aria-label": "Статус",
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):

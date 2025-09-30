@@ -33,7 +33,6 @@ class TaskFilter(django_filters.FilterSet):
         label="Метка",
     )
 
-
     class Meta:
         model = Task
         fields = ("status", "executor", "labels", "self_tasks")

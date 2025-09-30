@@ -70,7 +70,10 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 class AuthorOnlyDeleteMixin(UserPassesTestMixin):
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_authenticated and obj.author_id == self.request.user.id
+        return (
+                self.request.user.is_authenticated
+                and obj.author_id == self.request.user.id
+        )
 
     def handle_no_permission(self):
         messages.error(self.request, "Задачу может удалить только ее автор")
@@ -83,7 +86,7 @@ class TaskDeleteView(LoginRequiredMixin, AuthorOnlyDeleteMixin, DeleteView):
     success_url = reverse_lazy("tasks_index")
 
     def post(self, request, *args, **kwargs):
-        return  self.delete(request, *args, **kwargs)
+        return self.delete(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         messages.success(request, "Задача успешно удалена")
