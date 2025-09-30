@@ -38,14 +38,14 @@ class StatusDeleteView(DeleteView):
     template_name = "statuses/delete.html"
     success_url = reverse_lazy("statuses_index")
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         try:
-            self.object.delete()
             messages.success(request, "Статус успешно удален")
+            return super().post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(
                 request,
                 "Невозможно удалить статус, потому что он используется",
             )
-        return redirect(self.success_url)
+            return redirect("statuses_index")
