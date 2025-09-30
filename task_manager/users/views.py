@@ -96,5 +96,5 @@ class UserDeleteView(LoginRequiredMixin, SelfOnlyMixin, DeleteView):
         return super().form_valid(form)
 
     def handle_no_permission(self):
-        messages.error(self.request, "Вы не имеете прав для удаления другого пользователя")
+        messages.error(self.request, "У вас нет прав для изменения")
         return redirect("users_index")
