@@ -73,7 +73,7 @@ class AuthorOnlyDeleteMixin(UserPassesTestMixin):
         return self.request.user.is_authenticated and obj.author_id == self.request.user.id
 
     def handle_no_permission(self):
-        messages.error(self.request, "У вас нет прав для удаления этой задачи")
+        messages.error(self.request, "Задачу может удалить только ее автор")
         return redirect("tasks_index")
 
 
