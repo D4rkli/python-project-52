@@ -22,8 +22,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'task_manager.labels',
-#    'task_manager.models',
     'task_manager.tasks',
     'task_manager.users',
     'task_manager.statuses',
@@ -33,6 +31,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -41,7 +40,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -103,11 +101,20 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 
 ROLLBAR = {
-    "access_token": os.getenv("ROLLBAR_ACCESS_TOKEN", ""),
-    "environment": os.getenv("ROLLBAR_ENV", "development" if os.getenv("DJANGO_DEBUG", "False").lower() in {"1","true","yes"} else "production"),
-    "code_version": os.getenv("RENDER_GIT_COMMIT", ""),
+    "access_token": os.getenv("ROLLBAR_TOKEN", ""),
+    "environment": os.getenv("ENVIRONMENT", "development"),
     "root": str(BASE_DIR),
+    "code_version": os.getenv("GIT_SHA", ""),
+    "branch": os.getenv("GIT_BRANCH", "main"),
+    "scrub_fields": [
+        "password", "password1", "password2", "csrfmiddlewaretoken",
+        "sessionid", "token", "authorization",
+    ],
 }
+
+if ROLLBAR["access_token"] and not DEBUG:
+    rollbar.init(**ROLLBAR)
+
 
 render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 if render_host:
