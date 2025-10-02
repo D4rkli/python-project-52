@@ -100,21 +100,25 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 
+
+def rollbar_person(request):
+    user = getattr(request, "user", None)
+    if user and user.is_authenticated:
+        return {"id": user.id, "username": user.username, "email": user.email}
+    return None
+
 ROLLBAR = {
-    "access_token": os.getenv("ROLLBAR_TOKEN", ""),
-    "environment": os.getenv("ENVIRONMENT", "development"),
+    "access_token": os.getenv("ROLLBAR_ACCESS_TOKEN", "").strip(),
+    "environment": os.getenv("ROLLBAR_ENV", "development"),
     "root": str(BASE_DIR),
-    "code_version": os.getenv("GIT_SHA", ""),
-    "branch": os.getenv("GIT_BRANCH", "main"),
-    "scrub_fields": [
-        "password", "password1", "password2", "csrfmiddlewaretoken",
-        "sessionid", "token", "authorization",
-    ],
+    "code_version": os.getenv("GIT_COMMIT", "").strip(),
+    "capture_ip": "anonymize",
+    "person_fn": "task_manager.settings.rollbar_person",
+    "scrub_fields": ["password", "secret", "token"],
 }
 
-if ROLLBAR["access_token"] and not DEBUG:
+if ROLLBAR["access_token"]:
     rollbar.init(**ROLLBAR)
-
 
 render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 if render_host:
