@@ -1,6 +1,5 @@
 import dj_database_url
 from pathlib import Path
-from django.urls import reverse_lazy
 
 import rollbar
 from dotenv import load_dotenv
