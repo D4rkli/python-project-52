@@ -1,15 +1,17 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% block title %}Task Manager{% endblock %}
-{% block content %}
-  <div class="text-center">
-    <h1 class="display-5 fw-bold mb-3">{% trans "Добро пожаловать в Менеджер задач" %}</h1>
-    <p class="lead mb-4">{% trans "Manage users, tasks, and labels with ease." %}</p>
-    <div class="d-flex gap-2 justify-content-center">
-      <a class="btn btn-outline-secondary" href="/login/">{% trans "Вход" %}</a>
-      <a class="btn btn-primary" href="/users/create/">{% trans "Зарегистрироваться" %}</a>
-      <a class="btn btn-outline-primary" href="/users/">{% trans "Пользователи" %}</a>
-    </div>
-  </div>
-{% endblock %}
+{% block title %}Главная{% endblock %}
 
+{% block content %}
+<h1 class="mb-4">Task Manager</h1>
+
+{% if user.is_authenticated %}
+  <p class="text-muted mb-3">Вы вошли как {{ user.username }}.</p>
+  <a class="btn btn-primary" href="{% url 'tasks_index' %}">К задачам</a>
+{% else %}
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary" href="{% url 'login' %}">Вход</a>
+    <a class="btn btn-outline-primary" href="{% url 'users_create' %}">Регистрация</a>
+  </div>
+{% endif %}
+
+{% endblock %}
