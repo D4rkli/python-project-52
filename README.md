@@ -1,6 +1,7 @@
 # Task Manager (Django, Hexlet)
 
 [![hexlet-check](https://github.com/D4rkli/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/D4rkli/python-project-52/actions/workflows/hexlet-check.yml)
+[![Tests & Coverage](https://github.com/D4rkli/python-project-52/actions/workflows/tests-and-coverage.yml/badge.svg?branch=main)](https://github.com/D4rkli/python-project-52/actions/workflows/tests-and-coverage.yml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=D4rkli_python-project-52&metric=coverage)](https://sonarcloud.io/summary/new_code?id=D4rkli_python-project-52)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=D4rkli_python-project-52&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=D4rkli_python-project-52)
 
