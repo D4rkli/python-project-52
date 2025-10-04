@@ -1,9 +1,0 @@
-Django>=5.0
-gunicorn
-python-dotenv
-dj-database-url
-whitenoise
-psycopg2-binary
-django-bootstrap5
-django-filter
-rollbar
