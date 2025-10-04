@@ -9,3 +9,25 @@ __pycache__/
 
 *.sqlite3
 playwright/.cache/
+
+.env
+.env.*
+!.env.example
+
+*.log
+
+.vscode/
+
+build/
+dist/
+*.egg-info/
+hexlet_code.egg-info/
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.cache/
+
+staticfiles/
