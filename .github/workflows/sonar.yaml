@@ -1,23 +1,77 @@
 name: sonar
+
 on:
   push:
-    branches: [ main ]
   pull_request:
-    types: [opened, synchronize, reopened]
+
 jobs:
-  sonar:
+  tests-and-coverage:
     runs-on: ubuntu-latest
+
+    env:
+      DJANGO_SETTINGS_MODULE: task_manager.settings
+      DATABASE_URL: sqlite:///$(pwd)/ci.sqlite3
+      ROLLBAR_ACCESS_TOKEN: ""
+      ROLLBAR_ENV: ci
+      PYTHONPATH: ${{ github.workspace }}
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install . && pip install pytest pytest-cov
-      - run: pytest -q --cov=task_manager --cov-report=xml
-      - uses: SonarSource/sonarcloud-github-action@v2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+      - name: Install project (dev)
+        run: uv sync --all-extras --dev
+
+
+      - name: Migrate DB
+        run: python manage.py migrate --noinput
+
+      - name: Run tests with coverage
+        run: |
+          pytest -q --cov=task_manager --cov-report=xml
+
+      - name: Upload coverage artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+  sonarcloud:
+    needs: tests-and-coverage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-xml
+          path: .
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=<ORG>_<REPO>
+            -Dsonar.organization=<ORG>
+            -Dsonar.python.version=3.12
+            -Dsonar.sources=task_manager
+            -Dsonar.tests=tests
+            -Dsonar.exclusions=**/migrations/**,staticfiles/**,**/*.po
+            -Dsonar.python.coverage.reportPaths=coverage.xml
