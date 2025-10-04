@@ -1,5 +1,9 @@
 # Task Manager (Django, Hexlet)
 
+[![hexlet-check](https://github.com/D4rkli/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/D4rkli/python-project-52/actions/workflows/hexlet-check.yml)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=D4rkli_python-project-52&metric=coverage)](https://sonarcloud.io/summary/new_code?id=D4rkli_python-project-52)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=D4rkli_python-project-52&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=D4rkli_python-project-52)
+
 Минимальный таск‑менеджер: пользователи, статусы, метки и задачи с фильтрацией. UI на Bootstrap, сервер на Django.
 
 **Демо:** https://python-project-52-l36d.onrender.com
@@ -106,7 +110,6 @@ python manage.py runserver 0.0.0.0:8000
 python manage.py createsuperuser
 ```
 
-Открой http://127.0.0.1:8000
 
 ---
 
@@ -125,41 +128,6 @@ ruff check --fix .
 # Форматирование Ruff
 ruff format .
 ```
-
-### Полезные цели Makefile (пример)
-
-```make
-install:
-	uv pip install -r requirements.txt
-
-migrate:
-	python manage.py migrate
-
-collectstatic:
-	python manage.py collectstatic --noinput
-
-run:
-	python manage.py runserver 0.0.0.0:8000
-
-test:
-	pytest -vv
-
-lint:
-	ruff check .
-
-fix:
-	ruff check --fix .
-
-fmt:
-	ruff format .
-
-render-start:
-	gunicorn task_manager.wsgi:application --bind 0.0.0.0:$$PORT
-
-build:
-	./build.sh
-```
-
 ---
 
 ## Деплой на Render (PaaS)
