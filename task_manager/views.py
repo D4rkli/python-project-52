@@ -6,7 +6,7 @@ from django.http import HttpResponse
 User = get_user_model()
 
 
-def home(request):
+def home(_request):
     return HttpResponse("Hello from Task Manager! 👋")
 
 
@@ -14,5 +14,5 @@ class HomeView(TemplateView):
     template_name = 'index.html'
 
 
-def rollbar_test_view(request):
+def rollbar_test_view(_request):
     raise RuntimeError("Rollbar test: boom from production!")

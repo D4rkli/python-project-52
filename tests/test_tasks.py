@@ -41,7 +41,7 @@ def test_create_task(client, users, status):
 
 @pytest.mark.django_db
 def test_only_author_can_delete(client, users, status):
-    author, execu, other = users
+    author, execu, _ = users
     t = Task.objects.create(
         name="T", description="",
         status=status,
