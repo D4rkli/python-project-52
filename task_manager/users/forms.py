@@ -4,139 +4,126 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from task_manager.common import labels
+from task_manager.common import labels as L
 
 User = get_user_model()
 
 
 class LoginForm(AuthenticationForm):
     username = UsernameField(
-        label="Имя пользователя",
+        label=L.USERNAME,
         widget=forms.TextInput(attrs={
             "class": "form-control",
-            "placeholder": "Имя пользователя",
-            "aria-label": "Имя пользователя",
+            "placeholder": L.USERNAME,
+            "aria-label": L.USERNAME,
             "autofocus": True,
         })
     )
     password = forms.CharField(
-        label="Пароль",
+        label=L.PASSWORD,
         strip=False,
         widget=forms.PasswordInput(attrs={
             "class": "form-control",
-            "placeholder": "Пароль",
-            "aria-label": "Пароль",
+            "placeholder": L.PASSWORD,
+            "aria-label": L.PASSWORD,
         })
     )
 
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(
-        label='Имя', required=False,
+        label=L.FIRST_NAME,
+        required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Имя',
-            'aria-label': 'Имя',
+            "class": "form-control",
+            "placeholder": L.FIRST_NAME,
+            "aria-label": L.FIRST_NAME,
         })
     )
     last_name = forms.CharField(
-        label='Фамилия', required=False,
+        label=L.LAST_NAME,
+        required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Фамилия',
-            'aria-label': 'Фамилия',
+            "class": "form-control",
+            "placeholder": L.LAST_NAME,
+            "aria-label": L.LAST_NAME,
         })
     )
     username = forms.CharField(
-        label='Имя пользователя',
+        label=L.USERNAME,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Имя пользователя',
-            'aria-label': 'Имя пользователя',
+            "class": "form-control",
+            "placeholder": L.USERNAME,
+            "aria-label": L.USERNAME,
         })
     )
     password1 = forms.CharField(
-        label='Пароль',
+        label=L.PASSWORD,
         widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Пароль',
-            'aria-label': 'Пароль',
-            'minlength': 8,
+            "class": "form-control",
+            "placeholder": L.PASSWORD,
+            "aria-label": L.PASSWORD,
+            "minlength": 8,
         })
     )
     password2 = forms.CharField(
-        label='Подтверждение пароля',
+        label=L.PASSWORD_CONFIRM,
         widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Подтверждение пароля',
-            'aria-label': 'Подтверждение пароля',
-            'minlength': 8,
+            "class": "form-control",
+            "placeholder": L.PASSWORD_CONFIRM,
+            "aria-label": L.PASSWORD_CONFIRM,
+            "minlength": 8,
         })
     )
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('first_name',
-                  'last_name',
-                  'username',
-                  'password1',
-                  'password2',
-                  )
+        fields = ("first_name", "last_name", "username", "password1", "password2")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.label_suffix = ''
+        self.label_suffix = ""
 
 
 class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
-        label="Имя",
+        label=L.FIRST_NAME,
         required=False,
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Имя",
-            }
-        ),
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": L.FIRST_NAME,
+        }),
     )
     last_name = forms.CharField(
-        label="Фамилия",
+        label=L.LAST_NAME,
         required=False,
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Фамилия",
-            }
-        ),
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": L.LAST_NAME,
+        }),
     )
     username = forms.CharField(
-        label="Имя пользователя",
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Имя пользователя",
-            }
-        ),
+        label=L.USERNAME,
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": L.USERNAME,
+        }),
     )
     password1 = forms.CharField(
-        label="Пароль",
+        label=L.PASSWORD,
         required=False,
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Пароль",
-            }
-        ),
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": L.PASSWORD,
+        }),
     )
     password2 = forms.CharField(
-        label="Подтверждение пароля",
+        label=L.PASSWORD_CONFIRM,
         required=False,
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Подтверждение пароля",
-            }
-        ),
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": L.PASSWORD_CONFIRM,
+        }),
     )
 
     class Meta:
@@ -149,15 +136,9 @@ class UserUpdateForm(forms.ModelForm):
         p2 = cleaned.get("password2") or ""
         if p1 or p2:
             if len(p1) < 8:
-                self.add_error(
-                    "password1",
-                    "Пароль должен быть не менее 8 символов.",
-                )
+                self.add_error("password1", _("Пароль должен быть не менее 8 символов."))
             if p1 != p2:
-                self.add_error(
-                    "password2",
-                    "Пароли не совпадают.",
-                )
+                self.add_error("password2", _("Пароли не совпадают."))
         return cleaned
 
     def save(self, commit=True):
