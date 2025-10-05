@@ -33,6 +33,11 @@ class TaskFilter(django_filters.FilterSet):
         label="Метка",
     )
 
+    label = django_filters.NumberFilter(
+        method="filter_label",
+        label="Метка",
+    )
+
     class Meta:
         model = Task
         fields = ("status", "executor", "labels", "self_tasks")
@@ -49,3 +54,7 @@ class TaskFilter(django_filters.FilterSet):
 
     def filter_self_tasks(self, queryset, name, value):
         return queryset.filter(author=self.request.user) if value else queryset
+
+    def filter_label(self, queryset, name, value):
+        return queryset.filter(
+            labels__id=value).distinct() if value else queryset

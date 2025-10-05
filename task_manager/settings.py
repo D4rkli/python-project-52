@@ -1,6 +1,8 @@
 import dj_database_url
 from pathlib import Path
 
+import secrets
+from django.core.exceptions import ImproperlyConfigured
 import rollbar
 from dotenv import load_dotenv
 import os
@@ -9,8 +11,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env", override=False)
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-please-change")
-DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1","true","yes"}
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1", "true", "yes"}
+
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = secrets.token_urlsafe(50)
+    else:
+        raise ImproperlyConfigured("DJANGO_SECRET_KEY is not set")
 
 ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
 
