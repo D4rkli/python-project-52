@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from .models import Task
+from task_manager.common import labels as L
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 
@@ -12,7 +13,7 @@ User = get_user_model()
 class TaskFilter(django_filters.FilterSet):
     self_tasks = django_filters.BooleanFilter(
         method="filter_self_tasks",
-        label="Только свои задачи",
+        label=L.ONLY_SELF_TASKS,
         field_name="self_tasks",
         widget=forms.CheckboxInput(attrs={
             "id": "id_self_tasks",
@@ -22,20 +23,20 @@ class TaskFilter(django_filters.FilterSet):
 
     status = django_filters.ModelChoiceFilter(
         queryset=Status.objects.all().order_by("id"),
-        label="Статус",
+        label=L.STATUS,
     )
     executor = django_filters.ModelChoiceFilter(
         queryset=User.objects.all().order_by("id"),
-        label="Исполнитель",
+        label=L.EXECUTOR,
     )
     labels = django_filters.ModelMultipleChoiceFilter(
         queryset=Label.objects.all().order_by("id"),
-        label="Метка",
+        label=L.LABEL,
     )
 
     label = django_filters.NumberFilter(
         method="filter_label",
-        label="Метка",
+        label=L.LABEL,
     )
 
     class Meta:
