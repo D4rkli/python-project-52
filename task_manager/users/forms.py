@@ -78,7 +78,13 @@ class SignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("first_name", "last_name", "username", "password1", "password2")
+        fields = (
+            "first_name",
+            "last_name",
+            "username",
+            "password1",
+            "password2",
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -136,9 +142,11 @@ class UserUpdateForm(forms.ModelForm):
         p2 = cleaned.get("password2") or ""
         if p1 or p2:
             if len(p1) < 8:
-                self.add_error("password1", _("Пароль должен быть не менее 8 символов."))
+                self.add_error("password1",
+                               _("Пароль должен быть не менее 8 символов."))
             if p1 != p2:
-                self.add_error("password2", _("Пароли не совпадают."))
+                self.add_error("password2",
+                               _("Пароли не совпадают."))
         return cleaned
 
     def save(self, commit=True):
