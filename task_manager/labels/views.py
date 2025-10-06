@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -37,16 +38,14 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "labels/delete.html"
     success_url = reverse_lazy("labels_index")
 
-    def post(self, _request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-
-        if self.object.tasks.exists():
+        try:
+            messages.success(request, "Метка успешно удалена")
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
             messages.error(
-                _request,
-                "Невозможно удалить метку, потому что она"
-                "используется",
+                request,
+                "Невозможно удалить метку, потому что она используется",
             )
             return redirect("labels_index")
-
-        messages.success(request, "Метка успешно удалена")
-        return super().post(request, *args, **kwargs)
