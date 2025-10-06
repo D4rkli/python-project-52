@@ -15,10 +15,9 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1", "true", "yes"}
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
-    if os.getenv("CI") == "true" or DEBUG:
-        SECRET_KEY = secrets.token_urlsafe(64)
-    else:
+    if os.getenv("CI") == "true":
         raise ImproperlyConfigured("DJANGO_SECRET_KEY is not set")
+    SECRET_KEY = "dev-" + secrets.token_urlsafe(32)
 
 ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
 
