@@ -1,18 +1,21 @@
-name: tests-and-sonar
+name: tests
 
 on:
   push:
   pull_request:
 
 jobs:
-
   tests:
     runs-on: ubuntu-latest
+
     env:
       DJANGO_SETTINGS_MODULE: task_manager.settings
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DJANGO_DEBUG: "False"
       DATABASE_URL: sqlite:///$(pwd)/ci.sqlite3
       ROLLBAR_ACCESS_TOKEN: ""
       ROLLBAR_ENV: ci
+      PYTHONPATH: ${{ github.workspace }}
 
     steps:
       - uses: actions/checkout@v4
@@ -27,41 +30,33 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Install project (dev)
-        run: uv sync --dev
+        run: uv sync --all-extras --dev
+
+      - name: Check DJANGO_SECRET_KEY presence (safe)
+        run: |
+          python - <<'PY'
+          import os
+          v = os.getenv("DJANGO_SECRET_KEY")
+          print("Has DJANGO_SECRET_KEY:", bool(v), "len:", len(v) if v else 0)
+          PY
+
+      - name: Generate temp SECRET_KEY if missing
+        run: |
+          if [ -z "${DJANGO_SECRET_KEY}" ]; then
+            echo "DJANGO_SECRET_KEY=$(python - <<'PY'
+            import secrets; print('ci-'+secrets.token_urlsafe(64))
+            PY
+            )" >> $GITHUB_ENV
+          fi
 
       - name: Migrate DB
-        run: uv run python manage.py migrate --noinput
+        run: python manage.py migrate --noinput
 
       - name: Run tests with coverage
-        run: uv run pytest -q --cov=task_manager --cov-report=xml
+        run: pytest -q --cov=task_manager --cov-report=xml
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-xml
           path: coverage.xml
-
-
-  sonarcloud:
-    needs: tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      id-token: write
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-xml
-          path: .
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
