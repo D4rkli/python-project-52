@@ -38,10 +38,10 @@ jobs:
           echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-ci-$(python -c 'import secrets; print(secrets.token_urlsafe(64))')}" >> "$GITHUB_ENV"
 
       - name: Migrate DB
-        run: python manage.py migrate --noinput
+        run: uv run python manage.py migrate --noinput
 
       - name: Run tests with coverage
-        run: pytest -q --cov=task_manager --cov-report=xml
+        run: uv run pytest -q --cov=task_manager --cov-report=xml
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
