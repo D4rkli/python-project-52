@@ -1,5 +1,6 @@
 import dj_database_url
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 
 import secrets
 from django.core.exceptions import ImproperlyConfigured
@@ -11,15 +12,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env", override=False)
 
-DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"1", "true", "yes"}
+def env_flag(name: str, default: bool = False) -> bool:
+    val = os.getenv(name, str(default))
+    return val.lower() in {"1", "true", "yes", "y", "on"}
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-if not SECRET_KEY:
-    if os.getenv("CI") == "true":
+
+DEBUG = env_flag("DJANGO_DEBUG", False)
+
+_secret = os.getenv("DJANGO_SECRET_KEY")
+if not _secret:
+    if env_flag("CI", False):
         raise ImproperlyConfigured("DJANGO_SECRET_KEY is not set")
-    SECRET_KEY = "dev-" + secrets.token_urlsafe(32)
+    _secret = get_random_secret_key()
+SECRET_KEY = _secret
 
-ALLOWED_HOSTS = ["webserver", "localhost", "127.0.0.1"]
+_default_hosts = "webserver,localhost,127.0.0.1"
+ALLOWED_HOSTS = [
+    h.strip()
+    for h in os.getenv("DJANGO_ALLOWED_HOSTS", _default_hosts).split(",")
+    if h.strip()
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
