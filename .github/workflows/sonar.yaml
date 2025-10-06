@@ -1,4 +1,4 @@
-name: tests
+name: tests-and-sonar
 
 on:
   push:
@@ -7,15 +7,13 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-
     env:
       DJANGO_SETTINGS_MODULE: task_manager.settings
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DJANGO_DEBUG: "False"
       DATABASE_URL: sqlite:///$(pwd)/ci.sqlite3
+      PYTHONPATH: ${{ github.workspace }}
       ROLLBAR_ACCESS_TOKEN: ""
       ROLLBAR_ENV: ci
-      PYTHONPATH: ${{ github.workspace }}
+      CI: "true"
 
     steps:
       - uses: actions/checkout@v4
@@ -32,22 +30,12 @@ jobs:
       - name: Install project (dev)
         run: uv sync --all-extras --dev
 
-      - name: Check DJANGO_SECRET_KEY presence (safe)
+      - name: Ensure DJANGO_SECRET_KEY
+        shell: bash
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
-          python - <<'PY'
-          import os
-          v = os.getenv("DJANGO_SECRET_KEY")
-          print("Has DJANGO_SECRET_KEY:", bool(v), "len:", len(v) if v else 0)
-          PY
-
-      - name: Generate temp SECRET_KEY if missing
-        run: |
-          if [ -z "${DJANGO_SECRET_KEY}" ]; then
-            echo "DJANGO_SECRET_KEY=$(python - <<'PY'
-            import secrets; print('ci-'+secrets.token_urlsafe(64))
-            PY
-            )" >> $GITHUB_ENV
-          fi
+          echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-ci-$(python -c 'import secrets; print(secrets.token_urlsafe(64))')}" >> "$GITHUB_ENV"
 
       - name: Migrate DB
         run: python manage.py migrate --noinput
@@ -60,3 +48,27 @@ jobs:
         with:
           name: coverage-xml
           path: coverage.xml
+
+  sonarcloud:
+    needs: tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-xml
+          path: .
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
