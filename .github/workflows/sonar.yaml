@@ -59,14 +59,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        with: { fetch-depth: 0 }
 
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
           name: coverage-xml
           path: .
+
+      - name: Move coverage to project root
+        run: |
+          ls -R
+          if [ -f coverage-xml/coverage.xml ]; then
+            mv coverage-xml/coverage.xml coverage.xml
+          fi
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
