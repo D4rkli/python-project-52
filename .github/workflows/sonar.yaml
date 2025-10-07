@@ -1,4 +1,4 @@
-name: ci
+name: tests-and-sonar
 
 on:
   push:
@@ -7,44 +7,41 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-
     env:
       DJANGO_SETTINGS_MODULE: task_manager.settings
-      DJANGO_DEBUG: "False"
-      DJANGO_SECRET_KEY: dev-ci-key
-      DATABASE_URL: sqlite:///${{ github.workspace }}/ci.sqlite3
+      DATABASE_URL: sqlite:////tmp/ci.sqlite3
       PYTHONPATH: ${{ github.workspace }}
       ROLLBAR_ACCESS_TOKEN: ""
       ROLLBAR_ENV: ci
+      CI: "true"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
 
       - name: Install project (dev)
+        run: uv sync --all-extras --dev
+
+      - name: Ensure DJANGO_SECRET_KEY
+        shell: bash
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
-          uv sync --all-extras --dev
-          uv run python - <<'PY'
-          import django; print("Django:", django.get_version())
-          PY
+          echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-ci-$(python -c 'import secrets; print(secrets.token_urlsafe(64))')}" >> "$GITHUB_ENV"
 
       - name: Migrate DB
-        run: |
-          uv run python manage.py migrate --noinput --settings=task_manager.settings
+        run: uv run python manage.py migrate --noinput
 
       - name: Run tests with coverage
-        run: |
-          uv run pytest -q --ds=task_manager.settings --cov=task_manager --cov-report=xml
+        run: uv run pytest -q --cov=task_manager --cov-report=xml
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
@@ -52,13 +49,18 @@ jobs:
           name: coverage-xml
           path: coverage.xml
 
-  sonar:
+  sonarcloud:
     needs: tests
     runs-on: ubuntu-latest
-    if: ${{ secrets.SONAR_TOKEN != '' }}
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
@@ -70,14 +72,3 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=<ORG>_<REPO>
-            -Dsonar.organization=<ORG>
-            -Dsonar.python.version=3.12
-            -Dsonar.sources=task_manager
-            -Dsonar.tests=tests
-            -Dsonar.exclusions=**/migrations/**,staticfiles/**,**/*.po
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.exclusions=**/migrations/**,staticfiles/**,**/*.po
-            -Dsonar.python.coverage.reportPaths=coverage.xml
