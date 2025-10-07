@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DJANGO_SETTINGS_MODULE: task_manager.settings
-      DATABASE_URL: sqlite:///$(pwd)/ci.sqlite3
+      DATABASE_URL: sqlite:////tmp/ci.sqlite3
       PYTHONPATH: ${{ github.workspace }}
       ROLLBAR_ACCESS_TOKEN: ""
       ROLLBAR_ENV: ci
