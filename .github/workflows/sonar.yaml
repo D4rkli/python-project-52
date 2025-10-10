@@ -7,6 +7,9 @@ on:
 jobs:
   tests-and-sonar:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     env:
       DJANGO_SETTINGS_MODULE: task_manager.settings
@@ -44,7 +47,7 @@ jobs:
           else
             echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" >> "$GITHUB_ENV"
           fi
-    
+
       - name: Migrate DB
         run: uv run python manage.py migrate --noinput
 
@@ -57,7 +60,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
-
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >
