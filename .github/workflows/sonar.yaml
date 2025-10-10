@@ -5,12 +5,8 @@ on:
   pull_request:
 
 jobs:
-  tests-and-sonar:
+  tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-
     env:
       DJANGO_SETTINGS_MODULE: task_manager.settings
       DATABASE_URL: sqlite:////tmp/ci.sqlite3
@@ -20,13 +16,11 @@ jobs:
       CI: "true"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -41,33 +35,60 @@ jobs:
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
-          if [ -z "${DJANGO_SECRET_KEY}" ]; then
-            KEY="ci-$(python -c 'import secrets,sys; sys.stdout.write(secrets.token_urlsafe(64))')"
-            echo "DJANGO_SECRET_KEY=${KEY}" >> "$GITHUB_ENV"
-          else
-            echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" >> "$GITHUB_ENV"
-          fi
+          echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-ci-$(python - <<'PY'
+            import secrets; print(secrets.token_urlsafe(64))
+            PY
+          )}" >> "$GITHUB_ENV"
 
       - name: Migrate DB
         run: uv run python manage.py migrate --noinput
 
-      - name: Run tests with coverage (pytest-cov)
+      - name: Run tests with coverage
         run: uv run pytest -q --cov=task_manager --cov-report=xml
 
-      - name: Verify coverage is present
-        run: ls -la coverage.xml
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+  sonarcloud:
+    needs: tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-xml
+          path: .
+
+      - name: Move coverage to project root (if needed)
+        shell: bash
+        run: |
+          if [ -f coverage-xml/coverage.xml ]; then
+            mv coverage-xml/coverage.xml coverage.xml
+          fi
+          [ -f coverage.xml ] && ls -l coverage.xml || (echo "coverage.xml not found" && exit 1)
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=D4rkli_python-project-52
-            -Dsonar.organization=d4rkli
+            -Dsonar.organization=D4rkli
             -Dsonar.python.version=3.12
-            -Dsonar.sources=.
+            -Dsonar.sources=task_manager
             -Dsonar.tests=tests
-            -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.exclusions=**/migrations/**,staticfiles/**,**/*.po
+            -Dsonar.python.coverage.reportPaths=coverage.xml
