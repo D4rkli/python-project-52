@@ -38,8 +38,13 @@ jobs:
         env:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
-          echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-ci-$(python -c 'import secrets; print(secrets.token_urlsafe(64))')}" >> "$GITHUB_ENV"
-
+          if [ -z "${DJANGO_SECRET_KEY}" ]; then
+            KEY="ci-$(python -c 'import secrets,sys; sys.stdout.write(secrets.token_urlsafe(64))')"
+            echo "DJANGO_SECRET_KEY=${KEY}" >> "$GITHUB_ENV"
+          else
+            echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" >> "$GITHUB_ENV"
+          fi
+    
       - name: Migrate DB
         run: uv run python manage.py migrate --noinput
 
