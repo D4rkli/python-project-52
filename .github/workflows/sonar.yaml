@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v3
@@ -36,7 +36,7 @@ jobs:
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
           echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-ci-$(python -c 'import secrets; print(secrets.token_urlsafe(64))')}" >> "$GITHUB_ENV"
-
+          
       - name: Migrate DB
         run: uv run python manage.py migrate --noinput
 
@@ -59,7 +59,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
@@ -67,14 +68,24 @@ jobs:
           name: coverage-xml
           path: .
 
-      - name: Move coverage to project root
+      - name: Move coverage to project root (if needed)
+        shell: bash
         run: |
-          ls -R
           if [ -f coverage-xml/coverage.xml ]; then
             mv coverage-xml/coverage.xml coverage.xml
           fi
+          [ -f coverage.xml ] && ls -l coverage.xml || (echo "coverage.xml not found" && exit 1)
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+           args: >
+             -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+             -Dsonar.organization=${{ vars.SONAR_ORG }}
+             -Dsonar.python.version=3.12
+             -Dsonar.sources=task_manager
+             -Dsonar.tests=tests
+             -Dsonar.exclusions=**/migrations/**,staticfiles/**,**/*.po
+             -Dsonar.python.coverage.reportPaths=coverage.xml
