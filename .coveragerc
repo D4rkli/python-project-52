@@ -1,9 +1,0 @@
-[run]
-relative_files = True
-
-source = task_manager
-
-[report]
-omit =
-    */migrations/*
-    manage.py
