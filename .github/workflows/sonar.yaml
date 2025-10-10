@@ -44,8 +44,14 @@ jobs:
       - name: Migrate DB
         run: uv run python manage.py migrate --noinput
 
-      - name: Run tests with coverage
-        run: uv run pytest -q --cov=task_manager --cov-branch --cov-report=xml:coverage.xml
+      - name: Run tests (collect coverage data)
+        run: |
+          uv run pytest -q --cov=task_manager --cov-branch --cov-report=
+
+      - name: Build XML report with relative paths
+        run: |
+          uv run coverage xml -i --relative-files -o coverage.xml
+          ls -l coverage.xml && head -n 20 coverage.xml || true
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
@@ -62,3 +68,4 @@ jobs:
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.coverage.exclusions=**/tests/**
             -Dsonar.exclusions=**/migrations/**,staticfiles/**,**/*.po
+            -X
