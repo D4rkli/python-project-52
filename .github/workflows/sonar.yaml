@@ -83,7 +83,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=D4rkli_python-project-52
-            -Dsonar.organization=D4rkli
+            -Dsonar.organization=d4rkli
             -Dsonar.python.version=3.12
             -Dsonar.sources=task_manager
             -Dsonar.tests=tests
